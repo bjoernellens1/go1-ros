@@ -1,0 +1,83 @@
+services:
+  base:
+    &base
+    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:base
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        ROS_DISTRO: "melodic"
+        UNDERLAY_WS: "/go1_ws"
+      target: base
+      platforms:
+        - linux/arm64
+        - linux/amd64
+    stdin_open: true
+    tty: true
+    network_mode: host
+    ipc: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+    restart: unless-stopped
+
+  overlay:
+    <<: *base
+    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:overlay
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: overlay
+      platforms:
+        - linux/arm64
+        - linux/amd64
+    volumes:
+      - .:/repo
+    command: /bin/bash
+
+  guis:
+    <<: *base
+    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:guis
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: guis
+      platforms:
+        - linux/arm64
+        - linux/amd64
+    command: /bin/bash
+    devices:
+      - /dev/dri:/dev/dri
+
+  ros1bridge:
+    image: ghcr.io/bjoernellens1/ros2_rmp/ros1bridge
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        ROS_DISTRO: humble
+      target: bridge
+      platforms:
+        - linux/amd64
+    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-2to1-topics
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=5
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_MASTER_URI=http://localhost:11311
+
+  roscore:
+    command: >
+      roscore
+    extends: ros1bridge
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=5
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_MASTER_URI=http://localhost:11311 # is configured to run roscore on the robot but could change to local ros1 machine here
