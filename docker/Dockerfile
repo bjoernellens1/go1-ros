@@ -185,8 +185,8 @@ RUN apt update && apt install -y \
 #RUN vcs import < dependencies.repos
 RUN vcs import < dependencies.repos
 
-# RUN chmod +x go1_republisher/scripts/mono.py \
-#     && chmod +x go1_republisher/scripts/stereo.py
+RUN chmod +x go1_republisher/scripts/mono.py \
+    && chmod +x go1_republisher/scripts/stereo.py
 
 # Build the base Colcon workspace, installing dependencies first.
 WORKDIR /${UNDERLAY_WS}
