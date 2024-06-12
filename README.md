@@ -6,6 +6,20 @@ This repository houses all code needed for starting developing ROS packages for 
 
 We are using Docker because it makes it easier to run different ROS environments even on most recent operating systems. Also, it provides a safe way to run our code on the GO1 implemented hardware (Jetson Nano, Raspberry Pi), without interfering with the base system too much. Btw. they use arm64 architecture.
 
+### Install Docker
+To install Docker on your system, follow the instructions on the official Docker website: https://docs.docker.com/get-docker/
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+Then allow your user to access Docker without sudo:
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+
 ### Build process
 For the build with docker buildx bake you will need binfmt dependencies for arm64 architecture, as we are doing a multiplatform build (Works on normal PCs as well as Jetson Nano, Raspberry Pi, Apple Silicon Devices).
 

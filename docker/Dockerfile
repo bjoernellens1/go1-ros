@@ -185,8 +185,8 @@ RUN apt update && apt install -y \
 #RUN vcs import < dependencies.repos
 RUN vcs import < dependencies.repos
 
-RUN chmod +x go1_republisher/scripts/mono.py \
-    && chmod +x go1_republisher/scripts/stereo.py
+# RUN chmod +x go1_republisher/scripts/mono.py \
+#     && chmod +x go1_republisher/scripts/stereo.py
 
 # Build the base Colcon workspace, installing dependencies first.
 WORKDIR /${UNDERLAY_WS}
@@ -206,6 +206,8 @@ RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 # RUN apt install python3-opencv -y
 
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
+  && catkin_make -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
+  && source ${UNDERLAY_WS}/install/setup.bash \
   && catkin_make
 
 # Set up the entrypoint
