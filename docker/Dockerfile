@@ -198,14 +198,19 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
 
 RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 
-# RUN pip3 install --upgrade pip \
-#     && pip3 install opencv-python
+ENV MAKEFLAGS="-j$(nproc)"
+
+RUN pip install --upgrade pip \
+    && pip install \ 
+      opencv-python \
+      pyyaml==5.4.1 \
+      rospkg
 
 # RUN ldconfig
 
-RUN apt install -y --no-install-recommends \
-      python-opencv \
-      python-yaml
+# RUN apt install -y --no-install-recommends \
+#       python-opencv \
+#       python-yaml
 
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && catkin_make -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
