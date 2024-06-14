@@ -203,7 +203,9 @@ RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 
 # RUN ldconfig
 
-# RUN apt install python3-opencv -y
+RUN apt install -y --no-install-recommends \
+      python-opencv \
+      python-yaml
 
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && catkin_make -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
