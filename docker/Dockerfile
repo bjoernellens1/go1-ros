@@ -2,7 +2,6 @@
 # That is why we must use some conditional statements to copy over the correct files during build process.
 # Variable TARGETPLATFORM should be auomatically created during build process by docker.
 ARG ROS_DISTRO
-ENV ROS_DISTRO=${ROS_DISTRO}
 
 ###############################
 # Build OpenCV4 on Ubuntu Bionic
@@ -69,6 +68,8 @@ ENV ROS_DISTRO=${ROS_DISTRO}
 ########################################
 # Base Image for GO1 republisher       #
 ########################################
+ARG ROS_DISTRO
+
 FROM ros:${ROS_DISTRO} as base
 
 ARG ROS_DISTRO
@@ -112,28 +113,29 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
     
 # Install my project requirements
-WORKDIR /venv
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
-RUN pip3 install numpy
+# WORKDIR /venv
+# RUN python3 -m venv /venv
+# ENV PATH="/venv/bin:$PATH"
+# RUN pip3 install numpy
 
+# not building opencv manually will be installed via pip later
 # Clone OpenCV and OpenCV-contrib repositories
-WORKDIR /opencv_build
-RUN git clone --branch 4.1.0 https://github.com/opencv/opencv.git \
-    && git clone --branch 4.1.0 https://github.com/opencv/opencv_contrib.git
+# WORKDIR /opencv_build
+# RUN git clone --branch 4.1.0 https://github.com/opencv/opencv.git \
+#     && git clone --branch 4.1.0 https://github.com/opencv/opencv_contrib.git
 
-# Build OpenCV
-WORKDIR /opencv_build/opencv/build
-RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    # -D CMAKE_INSTALL_PREFIX=/prefix \
-    # -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-    -D WITH_LIBV4L=ON \
-    -D BUILD_EXAMPLES=OFF ..
-RUN make -j$(nproc)
-RUN make install
-RUN ldconfig
+# # Build OpenCV
+# WORKDIR /opencv_build/opencv/build
+# RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+#     # -D CMAKE_INSTALL_PREFIX=/prefix \
+#     # -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+#     -D WITH_LIBV4L=ON \
+#     -D BUILD_EXAMPLES=OFF ..
+# RUN make -j$(nproc)
+# RUN make install
+# RUN ldconfig
 
-# install make install dependencies
+# install make install dependencies (are those needed?)
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
     libjpeg-dev \
@@ -160,8 +162,8 @@ SHELL ["/bin/bash", "-c"]
 
 # Create catkin workspace with external dependencies
 
-RUN mkdir -p /${UNDERLAY_WS}/src
-WORKDIR /${UNDERLAY_WS}/src
+RUN mkdir -p ${UNDERLAY_WS}/src
+WORKDIR ${UNDERLAY_WS}/src
 COPY dependencies.arm64.repos .
 COPY dependencies.amd64.repos .
 
@@ -190,21 +192,22 @@ RUN chmod +x go1_republisher/scripts/mono.py \
     && chmod +x go1_republisher/scripts/stereo.py
 
 # Build the base Colcon workspace, installing dependencies first.
-WORKDIR /${UNDERLAY_WS}
+WORKDIR ${UNDERLAY_WS}
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-camera-info-manager \
     python3-pip \
+    python-pip \
     python-rospkg
 
 RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 
 ENV MAKEFLAGS="-j$(nproc)"
 
-RUN pip install --upgrade pip \
-    && pip install \ 
+RUN pip3 install --upgrade pip \
+    && pip3 install \ 
       opencv-python \
-      pyyaml==5.4.1 \
+    #  pyyaml==5.4.1 \
       rospkg
 
 # RUN ldconfig
@@ -229,35 +232,38 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 ###########################################
 FROM base AS overlay
 
+ARG ROS_DISTRO
+ARG UNDERLAY_WS
+ARG OVERLAY_WS
+ARG TARGETPLATFORM
+ARG TARGETARCH
+
 # Create an overlay workspace
-RUN mkdir -p /overlay_ws/src
-WORKDIR /overlay_ws/src
+RUN mkdir -p ${OVERLAY_WS}/src
+WORKDIR ${OVERLAY_WS}/src
 COPY overlay.repos .
 RUN vcs import < overlay.repos
 
-WORKDIR /overlay_ws
+WORKDIR ${OVERLAY_WS}
 
 ENV DEBIAN_FRONTEND noninteractive 
 
-RUN source /${UNDERLAY_WS}/install/setup.bash \
-  && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install \
-    nano \
-    ros-${ROS_DISTRO}-robot-localization \
-    ros-${ROS_DISTRO}-joint-state-publisher \
-    ros-${ROS_DISTRO}-laser-filters -y \
-  && rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y \
-  && rm -rf /var/lib/apt/lists/*
+# RUN source ${OVERLAY_WS}/install/setup.bash \
+#   && apt-get update \
+#   && DEBIAN_FRONTEND=noninteractive apt-get install \
+#     nano \
+#     ros-${ROS_DISTRO}-robot-localization \
+#     ros-${ROS_DISTRO}-joint-state-publisher \
+#     ros-${ROS_DISTRO}-laser-filters -y \
+#   && rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y \
+#   && rm -rf /var/lib/apt/lists/*
 
-RUN source /${UNDERLAY_WS}/develop/setup.bash \
-  && catkin_make
+# RUN source /${UNDERLAY_WS}/develop/setup.bash \
+#   && catkin_make
 
-# Set up the entrypoint
-COPY ./docker/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-
-# Update repository at the end of this build stage
-RUN vcs pull src
+# # Set up the entrypoint
+# COPY ./docker/entrypoint.sh /
+# RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
@@ -266,31 +272,63 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 ###########################################
 FROM overlay AS guis
 
-# Install additional GUI tools
-RUN source /${UNDERLAY_WS}/install/setup.bash \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-rviz \
-  && rm -rf /var/lib/apt/lists/*
+ARG ROS_DISTRO
+ARG UNDERLAY_WS
+ARG OVERLAY_WS
+ARG TARGETPLATFORM
+ARG TARGETARCH
 
-# Update repository at the end of this build stage
-RUN vcs pull src
+# Install additional GUI tools
+RUN source ${UNDERLAY_WS}/develop/setup.bash \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ros-${ROS_DISTRO}-rviz \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+    ros-${ROS_DISTRO}-gazebo-ros-control \
+    ros-${ROS_DISTRO}-rqt \
+    ros-${ROS_DISTRO}-rqt-common-plugins \
+    ros-${ROS_DISTRO}-rqt-robot-plugins \
+    ros-${ROS_DISTRO}-rqt-rviz \
+    ros-${ROS_DISTRO}-rqt-tf-tree \
+    ros-${ROS_DISTRO}-rqt-web \
+    ros-${ROS_DISTRO}-rqt-plot \
+    ros-${ROS_DISTRO}-rqt-graph \
+    ros-${ROS_DISTRO}-rqt-bag \
+    ros-${ROS_DISTRO}-rqt-bag-plugins \
+    ros-${ROS_DISTRO}-rqt-controller-manager \
+    ros-${ROS_DISTRO}-rqt-moveit \
+    ros-${ROS_DISTRO}-rqt-msg \
+    ros-${ROS_DISTRO}-rqt-nav-view \
+    ros-${ROS_DISTRO}-rqt-robot-monitor \
+    ros-${ROS_DISTRO}-rqt-robot-steering \
+    ros-${ROS_DISTRO}-rqt-robot-dashboard \
+    ros-${ROS_DISTRO}-rqt-robot-plugins \
+    ros-${ROS_DISTRO}-rqt-robot-suite \
+    ros-${ROS_DISTRO}-rqt-runtime-monitor \
+    ros-${ROS_DISTRO}-rqt-shell \
+    ros-${ROS_DISTRO}-rqt-srv \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/ros2_rmp
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
 # This is an auto generated Dockerfile for ros:ros1-bridge
 # generated from docker_images_ros2/ros1_bridge/create_ros_ros1_bridge_image.Dockerfile.em
 FROM ros:eloquent-ros-base-bionic AS bridge
 
-RUN apt update && apt install -y curl gnupg2 lsb-release
+ARG ROS1_DISTRO
+ARG ROS2_DISTRO
+
+RUN apt update && apt install -y \
+      curl \
+      gnupg2 \
+      lsb-release
 
 # setup sources.list
 RUN echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros1-latest.list
 
-# setup keys
-# RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 
 ENV ROS1_DISTRO melodic

@@ -9,9 +9,10 @@ services:
         ROS_DISTRO: "melodic"
         UNDERLAY_WS: "/go1_ws"
       target: base
-      platforms:
-        - linux/arm64
-        - linux/amd64
+      x-bake:
+        platforms:
+          #- linux/arm64
+          - linux/amd64
     stdin_open: true
     tty: true
     network_mode: host
@@ -35,6 +36,10 @@ services:
       platforms:
         - linux/arm64
         - linux/amd64
+      args:
+        ROS_DISTRO: "melodic"
+        UNDERLAY_WS: "/go1_ws"
+        OVERLAY_WS: "/overlay_ws"
     volumes:
       - .:/repo
     command: /bin/bash
@@ -59,7 +64,10 @@ services:
       context: .
       dockerfile: docker/Dockerfile
       args:
-        ROS_DISTRO: humble
+        ROS1_DISTRO: "melodic"
+        ROS2_DISTRO: "eloquent"
+        UNDERLAY_WS: "/go1_ws"
+        OVERLAY_WS: "/overlay_ws"
       target: bridge
       platforms:
         - linux/amd64
