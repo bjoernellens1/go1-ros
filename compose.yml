@@ -27,6 +27,7 @@ services:
     restart: unless-stopped
 
   overlay:
+    &overlay
     <<: *base
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:overlay
     build:
@@ -45,7 +46,7 @@ services:
     command: /bin/bash
 
   guis:
-    <<: *base
+    <<: *overlay
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:guis
     build:
       context: .
@@ -54,38 +55,111 @@ services:
       platforms:
         - linux/arm64
         - linux/amd64
+      args:
+        ROS_DISTRO: "melodic"
+        UNDERLAY_WS: "/go1_ws"
     command: /bin/bash
     devices:
       - /dev/dri:/dev/dri
 
-  ros1bridge:
-    image: ghcr.io/bjoernellens1/ros2_rmp/ros1bridge
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      args:
-        ROS1_DISTRO: "melodic"
-        ROS2_DISTRO: "eloquent"
-        UNDERLAY_WS: "/go1_ws"
-        OVERLAY_WS: "/overlay_ws"
-      target: bridge
-      platforms:
-        - linux/amd64
-    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-2to1-topics
-    network_mode: host
-    ipc: host
-    environment:
-      - ROS_DOMAIN_ID=5
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_MASTER_URI=http://localhost:11311
+  ###################################################################################################################################
+  # Webgui control                                                                                                                  #
+  ###################################################################################################################################
+  olivetin:
+    container_name: olivetin
+    image: jamesread/olivetin
+    user: root
+    privileged: true
+    volumes:
+      - ./config/olivetin/:/config/ # here is config.yaml and icons located
+      - ./config/olivetin/icons:/var/www/olivetin/customIcons
+      - .:/repo
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - caddy_network
+    ports:
+      - "1337:1337"
+    restart: always
 
-  roscore:
+  ################################################################################################################################
+  # This section is mostly for supervision from PC                                                                               #
+  ################################################################################################################################
+
+  # Foxglove Studio Bridge
+  foxglove_bridge:
+    <<: *overlay
     command: >
-      roscore
-    extends: ros1bridge
+      roslaunch --screen foxglove_bridge foxglove_bridge.launch port:=8765
+
+  foxglove:
+    #image: husarion/foxglove
+    image: husarion/foxglove:studio-nightly
+    restart: unless-stopped
+    depends_on:
+      - foxglove_bridge
+    networks:
+      - caddy_network
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config/foxglove/extensions:/src/extensions
+      - ./config/foxglove/foxglove-layout.json:/foxglove/default-layout.json
+
+################################################################################################################################
+# Core Services for Web Management                                                                                             #
+################################################################################################################################
+  caddy:
+    image: caddy:latest
+    networks:
+      - caddy_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./config/caddy/content:/usr/share/caddy/
+    restart: always
+    depends_on:
+      - foxglove
+      - olivetin
+  roscore:
+    image: husarion/ros1-bridge:foxy-0.9.6-20230327-stable
+    command: |
+      bash -c "source /opt/ros/noetic/setup.bash && roscore"
+    network_mode: host
+    environment:
+      - ROS_DOMAIN_ID=5
+    restart: always
+  ros1bridge:
+    image: husarion/ros1-bridge:foxy-0.9.6-20230327-stable
+    command: |
+      ros2 run ros1_bridge dynamic_bridge
     network_mode: host
     ipc: host
     environment:
       - ROS_DOMAIN_ID=5
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_MASTER_URI=http://localhost:11311 # is configured to run roscore on the robot but could change to local ros1 machine here
+    restart: always
+  webui-joystick:
+    image: husarion/webui-ros-joystick:noetic-0.0.1-20230510-stable
+    network_mode: host
+    # networks:
+    #   - caddy_network
+    # ports:
+    #   - 8000:8000
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=5
+    restart: always
+    depends_on:
+      - ros1bridge
+    command: roslaunch webui-ros-joystick webui.launch
+
+################################################################################################################################
+# Docker related extra stuff                                                                                                   #
+################################################################################################################################
+networks:
+  caddy_network:
+    driver: bridge

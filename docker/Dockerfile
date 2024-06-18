@@ -210,12 +210,6 @@ RUN pip3 install --upgrade pip \
     #  pyyaml==5.4.1 \
       rospkg
 
-# RUN ldconfig
-
-# RUN apt install -y --no-install-recommends \
-#       python-opencv \
-#       python-yaml
-
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && catkin_make -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
   && source ${UNDERLAY_WS}/install/setup.bash \
@@ -226,6 +220,8 @@ COPY ./docker/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
 ###########################################
 # Overlay Image for GO1 Control           #
@@ -246,26 +242,17 @@ RUN vcs import < overlay.repos
 
 WORKDIR ${OVERLAY_WS}
 
-ENV DEBIAN_FRONTEND noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive 
 
-# RUN source ${OVERLAY_WS}/install/setup.bash \
-#   && apt-get update \
-#   && DEBIAN_FRONTEND=noninteractive apt-get install \
-#     nano \
-#     ros-${ROS_DISTRO}-robot-localization \
-#     ros-${ROS_DISTRO}-joint-state-publisher \
-#     ros-${ROS_DISTRO}-laser-filters -y \
-#   && rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y \
-#   && rm -rf /var/lib/apt/lists/*
-
-# RUN source /${UNDERLAY_WS}/develop/setup.bash \
-#   && catkin_make
-
-# # Set up the entrypoint
-# COPY ./docker/entrypoint.sh /
-# RUN chmod +x /entrypoint.sh
+RUN apt-get update \
+    && apt-get install -y \
+        nano \
+        ros-${ROS_DISTRO}-foxglove-bridge \
+    && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
 ###########################################
 # GUI Additions for ROS                   #
@@ -279,34 +266,32 @@ ARG TARGETPLATFORM
 ARG TARGETARCH
 
 # Install additional GUI tools
-RUN source ${UNDERLAY_WS}/develop/setup.bash \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends \
-    ros-${ROS_DISTRO}-rviz \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-gazebo-ros-control \
-    ros-${ROS_DISTRO}-rqt \
-    ros-${ROS_DISTRO}-rqt-common-plugins \
-    ros-${ROS_DISTRO}-rqt-robot-plugins \
-    ros-${ROS_DISTRO}-rqt-rviz \
-    ros-${ROS_DISTRO}-rqt-tf-tree \
-    ros-${ROS_DISTRO}-rqt-web \
-    ros-${ROS_DISTRO}-rqt-plot \
-    ros-${ROS_DISTRO}-rqt-graph \
-    ros-${ROS_DISTRO}-rqt-bag \
-    ros-${ROS_DISTRO}-rqt-bag-plugins \
-    ros-${ROS_DISTRO}-rqt-controller-manager \
-    ros-${ROS_DISTRO}-rqt-moveit \
-    ros-${ROS_DISTRO}-rqt-msg \
-    ros-${ROS_DISTRO}-rqt-nav-view \
-    ros-${ROS_DISTRO}-rqt-robot-monitor \
-    ros-${ROS_DISTRO}-rqt-robot-steering \
-    ros-${ROS_DISTRO}-rqt-robot-dashboard \
-    ros-${ROS_DISTRO}-rqt-robot-plugins \
-    ros-${ROS_DISTRO}-rqt-robot-suite \
-    ros-${ROS_DISTRO}-rqt-runtime-monitor \
-    ros-${ROS_DISTRO}-rqt-shell \
-    ros-${ROS_DISTRO}-rqt-srv \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+      ros-${ROS_DISTRO}-rviz \
+      ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+      ros-${ROS_DISTRO}-gazebo-ros-control \
+      ros-${ROS_DISTRO}-rqt \
+      ros-${ROS_DISTRO}-rqt-common-plugins \
+      ros-${ROS_DISTRO}-rqt-robot-plugins \
+      ros-${ROS_DISTRO}-rqt-rviz \
+      ros-${ROS_DISTRO}-rqt-tf-tree \
+      ros-${ROS_DISTRO}-rqt-web \
+      ros-${ROS_DISTRO}-rqt-plot \
+      ros-${ROS_DISTRO}-rqt-graph \
+      ros-${ROS_DISTRO}-rqt-bag \
+      ros-${ROS_DISTRO}-rqt-bag-plugins \
+      ros-${ROS_DISTRO}-rqt-controller-manager \
+      ros-${ROS_DISTRO}-rqt-moveit \
+      ros-${ROS_DISTRO}-rqt-msg \
+      ros-${ROS_DISTRO}-rqt-nav-view \
+      ros-${ROS_DISTRO}-rqt-robot-monitor \
+      ros-${ROS_DISTRO}-rqt-robot-steering \
+      ros-${ROS_DISTRO}-rqt-robot-dashboard \
+      ros-${ROS_DISTRO}-rqt-robot-plugins \
+      ros-${ROS_DISTRO}-rqt-runtime-monitor \
+      ros-${ROS_DISTRO}-rqt-shell \
+      ros-${ROS_DISTRO}-rqt-srv \
   && rm -rf /var/lib/apt/lists/*
 
 # Set up the entrypoint
@@ -360,3 +345,5 @@ RUN chmod +x /entrypoint.sh
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
