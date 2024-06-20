@@ -28,8 +28,13 @@ actions:
         choices:
           - value: reboot
           - value: shutdown
-  # This will SSH into a server an run the command 'service httpd restart'
-  - title: Restart httpd on Server 1
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.20.22 "echo complete"
+  # This will SSH into a server an run the command "echo complete"
+  - title: SSH test
+    shell: ssh -i /config/ssh/id_rsa -o StrictHostKeyChecking=no bjoern@192.168.20.79 "echo complete"
+    icon: ping
+    timeout: 5
+
+  - title: SSH docker start ouster
+    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.20.79 "cd ~/git/go1-ros-melodic && docker compose up ouster"
     icon: ping
     timeout: 5

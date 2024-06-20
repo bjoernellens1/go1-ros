@@ -79,7 +79,7 @@ ARG TARGETARCH
 
 ENV ROS_DISTRO=${ROS_DISTRO}
 ENV UNDERLAY_WS=${UNDERLAY_WS}
-ENV DEBIAN_FRONTEND noninteractive 
+ENV DEBIAN_FRONTEND noninteractive
 
 # Copy OpenCV binaries from opencv_builder stage
 # COPY --from=opencv_builder /prefix /prefix
@@ -347,3 +347,36 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+
+# ouster driver
+FROM base AS ouster
+
+ARG ROS_DISTRO
+ARG UNDERLAY_WS
+ARG OVERLAY_WS
+ARG TARGETPLATFORM
+ARG TARGETARCH
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+      ros-$ROS_DISTRO-pcl-ros \
+      ros-$ROS_DISTRO-rviz \
+      build-essential \
+      libeigen3-dev \
+      libjsoncpp-dev \
+      libspdlog-dev \
+      libcurl4-openssl-dev \
+      cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create an overlay workspace
+RUN mkdir -p ${OVERLAY_WS}/src
+WORKDIR ${OVERLAY_WS}/src
+RUN git clone --branch v0.10.0 --recurse-submodules https://github.com/ouster-lidar/ouster-ros.git
+
+WORKDIR ${OVERLAY_WS}
+RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
+    && catkin_make --cmake-args -DCATKIN_BLACKLIST_PACKAGES="ouster_ros" -DCMAKE_BUILD_TYPE=Release \
+    && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release

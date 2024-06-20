@@ -158,6 +158,28 @@ services:
     command: roslaunch webui-ros-joystick webui.launch
 
 ################################################################################################################################
+# Ouster Lidar related extra stuff                                                                                             #
+################################################################################################################################
+  ouster:
+    &ouster
+    <<: *base
+    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:ouster
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: ouster
+      platforms:
+        - linux/arm64
+        - linux/amd64
+      args:
+        ROS_DISTRO: "melodic"
+        UNDERLAY_WS: "/go1_ws"
+        OVERLAY_WS: "/overlay_ws"
+    volumes:
+      - .:/repo
+    command: /bin/bash
+
+################################################################################################################################
 # Docker related extra stuff                                                                                                   #
 ################################################################################################################################
 networks:
