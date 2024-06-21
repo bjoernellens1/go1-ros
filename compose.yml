@@ -207,7 +207,7 @@ services:
     volumes:
       - .:/repo
     devices:
-      - "/dev/HID-SENSOR-2000e1.3.auto:/dev/HID-SENSOR-2000e1.3.auto"
+      - "/dev/HID-SENSOR-2000e1.4.auto:/dev/HID-SENSOR-2000e1.4.auto"
       # - "/dev/iio:device0:/dev/iio:device0"
       # - "/dev/iio:device1:/dev/iio:device1"
       - "/dev/video0:/dev/video0"
