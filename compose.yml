@@ -1,6 +1,6 @@
 services:
   base:
-    &base
+    &base # yaml anchor for reuse
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:base
     build:
       context: .
@@ -18,17 +18,24 @@ services:
     network_mode: host
     ipc: host
     environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              count: 1
     restart: unless-stopped
 
   overlay:
     &overlay
-    <<: *base
+    <<: *base # using the base service as a template
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:overlay
     build:
       context: .
@@ -46,7 +53,7 @@ services:
     command: /bin/bash
 
   guis:
-    <<: *overlay
+    <<: *overlay # using the overlay service as a template
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:guis
     build:
       context: .
@@ -59,8 +66,6 @@ services:
         ROS_DISTRO: "melodic"
         UNDERLAY_WS: "/go1_ws"
     command: /bin/bash
-    devices:
-      - /dev/dri:/dev/dri
 
   ###################################################################################################################################
   # Webgui control                                                                                                                  #
@@ -87,7 +92,7 @@ services:
 
   # Foxglove Studio Bridge
   foxglove_bridge:
-    <<: *overlay
+    <<: *overlay # using the overlay service as a template
     command: >
       roslaunch --screen foxglove_bridge foxglove_bridge.launch port:=8765
 
@@ -162,7 +167,7 @@ services:
 ################################################################################################################################
   ouster:
     &ouster
-    <<: *base
+    <<: *base # using the base service as a template
     image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:ouster
     build:
       context: .

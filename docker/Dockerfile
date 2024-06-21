@@ -348,14 +348,20 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
-# ouster driver
-FROM base AS ouster
+###########################################
+# OUSTER Driver                           #
+###########################################
+#FROM base AS ouster
+# For ouster melodic is not supported any more so we use noetic
+FROM ros:noetic AS ouster
 
-ARG ROS_DISTRO
 ARG UNDERLAY_WS
 ARG OVERLAY_WS
 ARG TARGETPLATFORM
 ARG TARGETARCH
+
+# Use bash shell
+SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -371,6 +377,9 @@ RUN apt-get update && apt-get install -y \
       cmake \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y \
+    git \
+  && rm -rf /var/lib/apt/lists/*    
 # Create an overlay workspace
 RUN mkdir -p ${OVERLAY_WS}/src
 WORKDIR ${OVERLAY_WS}/src
@@ -378,5 +387,13 @@ RUN git clone --branch v0.10.0 --recurse-submodules https://github.com/ouster-li
 
 WORKDIR ${OVERLAY_WS}
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
-    && catkin_make --cmake-args -DCATKIN_BLACKLIST_PACKAGES="ouster_ros" -DCMAKE_BUILD_TYPE=Release \
     && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+# setup entrypoint
+COPY ./docker/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+# Set up the entrypoint
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
