@@ -31,6 +31,8 @@ services:
     #       devices:
     #         - capabilities: [gpu]
     #           count: all
+    devices:
+      - "/dev/dri:/dev/dri" # intel graphics card acceleration
     restart: unless-stopped
 
   overlay:
