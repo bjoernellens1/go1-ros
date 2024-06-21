@@ -184,7 +184,40 @@ services:
         OVERLAY_WS: "/overlay_ws"
     volumes:
       - .:/repo
+    command: roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35 # needs sourcing of workspace before running
+
+################################################################################################################################
+# Intel Realsense related extra stuff                                                                                          #
+################################################################################################################################
+  realsense:
+    &realsense
+    <<: *base # using the base service as a template
+    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:realsense
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: realsense
+      platforms:
+        - linux/arm64
+        - linux/amd64
+      args:
+        ROS_DISTRO: "melodic"
+        UNDERLAY_WS: "/go1_ws"
+        OVERLAY_WS: "/overlay_ws"
+    volumes:
+      - .:/repo
+    devices:
+      - "/dev/HID-SENSOR-2000e1.3.auto:/dev/HID-SENSOR-2000e1.3.auto"
+      - "/dev/iio:device0:/dev/iio:device0"
+      - "/dev/iio:device1:/dev/iio:device1"
+      - "/dev/video0:/dev/video0"
+      - "/dev/video1:/dev/video1"
+      - "/dev/video2:/dev/video2"
+      - "/dev/video3:/dev/video3"
+      - "/dev/video4:/dev/video4"
+      - "/dev/video5:/dev/video5"
     command: /bin/bash
+
 
 ################################################################################################################################
 # Docker related extra stuff                                                                                                   #

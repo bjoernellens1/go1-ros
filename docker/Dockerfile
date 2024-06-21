@@ -395,5 +395,23 @@ RUN chmod +x /entrypoint.sh
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+
+################################################################################################################################
+# Intel Realsense rDriver                                                                                                      #
+################################################################################################################################
+FROM base AS realsense
+
+RUN apt-get update && apt-get install -y \
+    ros-$ROS_DISTRO-realsense2-camera \
+    ros-$ROS_DISTRO-realsense2-description \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup entrypoint
+COPY ./docker/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+# Set up the entrypoint
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
