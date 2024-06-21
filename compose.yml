@@ -30,7 +30,7 @@ services:
         reservations:
           devices:
             - capabilities: [gpu]
-              count: 1
+              count: all
     restart: unless-stopped
 
   overlay:
