@@ -185,7 +185,7 @@ services:
     volumes:
       - .:/repo
     command: > 
-      roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35
+      roslaunch ouster_ros sensor.launch sensor_hostname:=169.254.41.35
     environment:
       - UNDERLAY_WS="/go1_ws"
       - OVERLAY_WS="/overlay_ws"
