@@ -235,6 +235,9 @@ services:
       - "/dev/video4:/dev/video4"
       - "/dev/video5:/dev/video5"
     privileged: true
+    environment:
+      - UNDERLAY_WS="/go1_ws"
+      - OVERLAY_WS="/overlay_ws"
     command: >
       roslaunch realsense2_camera rs_camera.launch
 
