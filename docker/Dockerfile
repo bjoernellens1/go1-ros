@@ -221,6 +221,9 @@ RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
+# Command to run when the container is started
+CMD ["bash"]
+
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
 ###########################################
@@ -251,6 +254,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+# Command to run when the container is started
+CMD ["bash"]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
@@ -296,6 +302,9 @@ RUN apt-get update \
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+# Command to run when the container is started
+CMD ["bash"]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
@@ -345,6 +354,9 @@ RUN chmod +x /entrypoint.sh
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+# Command to run when the container is started
+CMD ["bash"]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
 
@@ -413,5 +425,8 @@ RUN chmod +x /entrypoint.sh
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+# Command to run when the container is started
+CMD ["bash"]
 
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic

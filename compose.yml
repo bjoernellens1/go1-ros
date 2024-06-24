@@ -184,7 +184,8 @@ services:
         OVERLAY_WS: "/overlay_ws"
     volumes:
       - .:/repo
-    command: roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35 # needs sourcing of workspace before running
+    command: > 
+      roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35
 
 ################################################################################################################################
 # Intel Realsense related extra stuff                                                                                          #
@@ -217,7 +218,8 @@ services:
       - "/dev/video4:/dev/video4"
       - "/dev/video5:/dev/video5"
     privileged: true
-    command: /bin/bash
+    command: >
+      roslaunch realsense2_camera rs_camera.launch
 
 
 ################################################################################################################################
