@@ -4,7 +4,7 @@
 # Ensure the required environment variables are set
 : "${ROS_DISTRO:?Environment variable ROS_DISTRO not set or empty}"
 : "${UNDERLAY_WS:?Environment variable UNDERLAY_WS not set or empty}"
-: "${OVERLAY_WS:?Environment variable UNDERLAY_WS not set or empty}"
+: "${OVERLAY_WS:?Environment variable OVERLAY_WS not set or empty}"
 
 # Source ROS
 source /opt/ros/${ROS_DISTRO}/setup.bash

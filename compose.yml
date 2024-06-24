@@ -74,6 +74,9 @@ services:
   ################################################################################################################################
   ros_master:
     <<: *base # using the base service as a template
+    environment:
+      - UNDERLAY_WS="/go1_ws"
+      - OVERLAY_WS="/overlay_ws"
     command: >
       roscore
     restart: always
