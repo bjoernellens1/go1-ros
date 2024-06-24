@@ -186,7 +186,7 @@ services:
       - .:/repo
     command: >
       bash -c "source devel/setup.bash &&
-      roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35"
+      roslaunch ouster_ros driver.launch sensor_hostname:=169.254.41.35 viz:=false"
     environment:
       - UNDERLAY_WS="/go1_ws"
       - OVERLAY_WS="/overlay_ws"
