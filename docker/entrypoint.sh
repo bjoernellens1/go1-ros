@@ -11,30 +11,30 @@ source /opt/ros/${ROS_DISTRO}/setup.bash
 echo "Sourced ROS ${ROS_DISTRO}"
 
 # Source the base workspace, if built
-if [ -f ${UNDERLAY_WS}/develop/setup.bash ]
+if [ -f ${UNDERLAY_WS}/devel/setup.bash ]
 then
   source ${UNDERLAY_WS}/develop/setup.bash
   echo "Sourced GO1 ${UNDERLAY_WS} workspace"
 fi
 
 # Source the overlay workspace, if built
-if [ -f /overlay_ws/develop/setup.bash ]
+if [ -f ${OVERLAY_WS}/devel/setup.bash ]
 then
-  source /overlay_ws/develop/setup.bash
-  echo "Sourced GO1 Overlay workspace"
+  source ${OVERLAY_WS}/develop/setup.bash
+  echo "Sourced GO1 ${OVERLAY_WS} workspace"
 fi
 
 # Source the bridge workspace, if built
 if [ -f /opt/ros/melodic/local_setup.bash ]
 then
   source /opt/ros/melodic/local_setup.bash
-  echo "Sourced melodic distribution"
+  echo "Sourced melodic distribution for ROS2 bridge"
 fi
 
 if [ -f /opt/ros/eloquent/local_setup.bash ]
 then
   source /opt/ros/eloquent/local_setup.bash
-  echo "Sourced eloquent distribution"
+  echo "Sourced eloquent distribution for ROS2 bridge"
 fi
 
 # Execute the command passed into this entrypoint
