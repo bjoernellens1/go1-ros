@@ -1,6 +1,11 @@
 #!/bin/bash
 # Basic entrypoint for ROS / Colcon Docker containers
 
+# Ensure the required environment variables are set
+: "${ROS_DISTRO:?Environment variable ROS_DISTRO not set or empty}"
+: "${UNDERLAY_WS:?Environment variable UNDERLAY_WS not set or empty}"
+: "${OVERLAY_WS:?Environment variable UNDERLAY_WS not set or empty}"
+
 # Source ROS
 source /opt/ros/${ROS_DISTRO}/setup.bash
 echo "Sourced ROS ${ROS_DISTRO}"
@@ -9,7 +14,7 @@ echo "Sourced ROS ${ROS_DISTRO}"
 if [ -f ${UNDERLAY_WS}/develop/setup.bash ]
 then
   source ${UNDERLAY_WS}/develop/setup.bash
-  echo "Sourced GO1 underlay workspace"
+  echo "Sourced GO1 ${UNDERLAY_WS} workspace"
 fi
 
 # Source the overlay workspace, if built
