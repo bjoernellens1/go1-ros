@@ -249,18 +249,6 @@ services:
 ################################################################################################################################
   rosbag:
     <<: *base # using the base service as a template
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:rosbag
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: rosbag
-      platforms:
-        - linux/arm64
-        - linux/amd64
-      args:
-        ROS_DISTRO: "melodic"
-        UNDERLAY_WS: "/go1_ws"
-        OVERLAY_WS: "/overlay_ws"
     volumes:
       - .:/repo
     command: >
