@@ -1,0 +1,38 @@
+go1-pc:
+  state: unknown
+  hostname: go1-pc.local
+  ip:
+    - 192.168.0.2 # tplink network (external)
+    - 192.168.123.51 # go1 network (internal)
+  user: 
+go1-pi:
+  state: unknown
+  hostname: GO1-pi.local
+  ip:
+    - 192.168.123.161 # go1 network (internal)
+    - 192.168.12.1 # go1 wifi hotspot
+  user: pi
+GO1-nvidia-head:
+  state: unknown
+  hostname:
+  ip: 192.168.123.13 # go1 network (internal)
+  user: unitree
+GO1-nvidia-body1:
+  state: unknown
+  hostname:
+  ip: 192.168.123.14 # go1 network (internal)
+  user: unitree
+GO1-nvidia-body2:
+  state: unknown
+  hostname:
+  ip: 192.168.123.15 # go1 network (internal)
+  user: unitree
+GO1-MCU:
+  state: unknown
+  hostname:
+  ip: 192.168.123.10 # go1 network (internal)
+
+# other parameters
+# pw 123
+# wifi pw 00000000
+# wifi ssid UnitreeRoboticsGO1-000*Serial*
