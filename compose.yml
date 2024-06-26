@@ -13,8 +13,9 @@ services:
         platforms:
           #- linux/arm64
           - linux/amd64
-    stdin_open: true
+    stdin_open: false
     tty: true
+    stop_signal: SIGTERM
     network_mode: host
     ipc: host
     environment:
