@@ -1,7 +1,7 @@
 showNavigation: true
 logLevel: "INFO"
 showNewVersions: false
-showFooter: true
+showFooter: false
 
 
 
@@ -47,3 +47,49 @@ actions:
     shell: ssh -i /config/ssh/id_rsa bjoern@192.168.20.79 "cd ~/git/go1-ros-melodic && docker compose up ouster"
     icon: ping
     timeout: 5
+
+# Dashboards are a way of taking actions from the default "actions" view, and
+# organizing them into groups - either into folders, or fieldsets.
+#
+# The only way to properly use entities, are to use them with a `fieldset` on
+# a dashboard.
+dashboards:
+  # Top level items are dashboards.
+  - title: My Servers
+    contents:
+      # On dashboards, all items need to be in a "fieldset". If you don't
+      # specify a fieldset, actions will be assigned to a fieldset with a title
+      # called "default".
+      - title: All Servers
+        type: fieldset
+        contents:
+        # The contents of a dashboard will try to look for an action with a
+        # matching title IF the `contents: ` property is empty.
+        - title: Ping All Servers
+
+        # If you create an item with some "contents:", OliveTin will show that as
+        # directory.
+        - title: Hypervisors
+          contents:
+            - title: Ping hypervisor1
+            - title: Ping hypervisor2
+
+      # If you specify `type: fieldset` and some `contents`, it will show your
+      # actions grouped together without a folder.
+      - type: fieldset
+        entity: server
+        title: 'Server: {{ server.hostname }}'
+        contents:
+          # By default OliveTin will look for an action with a matching title
+          # and put it on the dashboard.
+          #
+          # Fieldsets  also support `type: display`, which can display arbitary
+          # text. This is useful for displaying things like a container's state.
+          - type: display
+            title: |
+              Hostname: <strong>{{ server.name }}</strong>
+              IP Address: <strong>{{ server.ip }}</strong>
+
+          # These are the actions (defined above) that we want on the dashboard.
+          - title: '{{ server.name }} Wake on Lan'
+          - title: '{{ server.name }} Power Off'
