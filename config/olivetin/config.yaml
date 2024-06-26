@@ -47,6 +47,17 @@ actions:
     shell: ssh -i /config/ssh/id_rsa bjoern@192.168.20.79 "cd ~/git/go1-ros-melodic && docker compose up ouster"
     icon: ping
     timeout: 5
+  
+  - title: Ping All Servers
+    shell: echo "ping all..."
+
+  - title: '{{ server.name }} Wake on Lan'
+    shell: 'wol {{ server.name }}'
+    timeout: 10
+
+  - title: '{{ server.name }} Power Off'
+    shell: 'ssh root@{{ server.name}} "poweroff"'
+    timeout: 10
 
 # Dashboards are a way of taking actions from the default "actions" view, and
 # organizing them into groups - either into folders, or fieldsets.
