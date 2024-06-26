@@ -52,6 +52,9 @@ services:
         OVERLAY_WS: "/overlay_ws"
     volumes:
       - .:/repo
+    environment:
+      - UNDERLAY_WS="/go1_ws"
+      - OVERLAY_WS="/overlay_ws"
     command: /bin/bash
 
   guis:
