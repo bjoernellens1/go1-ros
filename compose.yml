@@ -253,7 +253,7 @@ services:
     volumes:
       - .:/repo
     command: >
-      rosbag record --lz4 -a -p -o /repo/rosbags/
+      rosbag record --lz4 -a -p -o /repo/rosbags/auto
     # double check that this is working
     #rosbag record --lz4 -a -p -o /repo/rosbags/$(date +%Y%m%d_%H%M%S)
 
