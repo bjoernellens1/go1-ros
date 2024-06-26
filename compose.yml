@@ -248,7 +248,7 @@ services:
 # rosbag recording                                                                                                             #
 ################################################################################################################################
   rosbag:
-    <<: *base # using the base service as a template
+    <<: *overlay # using the base service as a template
     volumes:
       - .:/repo
     command: >
