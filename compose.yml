@@ -261,7 +261,8 @@ services:
     volumes:
       - .:/repo
     command: >
-      rosbag record -a
+      rosbag record --lz4 -a -p -O /repo/rosbags/$(date +%Y%m%d_%H%M%S).bag
+    # double check that this is working
 
 ################################################################################################################################
 # Docker related extra stuff                                                                                                   #
