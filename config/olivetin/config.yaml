@@ -14,29 +14,29 @@ entities:
 
 actions:
   - title: "Start Ouster Lidar"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d ouster"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d ouster"
     icon: '<img src = "customIcons/nav2_start.png" width = "48px"/>'
   - title: "Stop Ouster Lidar"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop ouster"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop ouster"
     icon: '<img src = "customIcons/nav2_stop.png" width = "48px"/>'
   - title: "Start Realsense"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d realsense"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d realsense"
     icon: '<img src = "customIcons/mapping_start.gif" width = "48px"/>'
   - title: "Stop Realsense"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop realsense"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop realsense"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Start Rosbag"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d rosbag"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Stop Rosbag"
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop rosbag"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   # - title: "Restart Teleop"
   #   icon: '<img src = "customIcons/gamepad.png" width = "48px"/>'
   #   shell: docker restart cps_loki-teleop-1
   - title: Restart or Shutdown System
     icon: restart
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.0.2 "cd ~/git/go1-ros-melodic && systemctl {{ choice }}" 
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && systemctl {{ choice }}" 
     arguments:
       - name: choice
         title: Pick one
@@ -45,12 +45,12 @@ actions:
           - value: shutdown
   # This will SSH into a server an run the command "echo complete"
   - title: SSH test
-    shell: ssh -i /config/ssh/id_rsa -o StrictHostKeyChecking=no bjoern@192.168.20.79 "echo complete"
+    shell: ssh -i /config/ssh/id_rsa -o StrictHostKeyChecking=no go1user@192.168.20.79 "echo complete"
     icon: ping
     timeout: 5
 
   - title: SSH docker start ouster
-    shell: ssh -i /config/ssh/id_rsa bjoern@192.168.20.79 "cd ~/git/go1-ros-melodic && docker compose up ouster"
+    shell: ssh -i /config/ssh/id_rsa go1user@192.168.20.79 "cd ~/git/go1-ros-melodic && docker compose up ouster"
     icon: ping
     timeout: 5
   
