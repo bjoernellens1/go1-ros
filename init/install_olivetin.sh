@@ -26,9 +26,32 @@ sudo apt-get install -f -y
 rm -f "$TEMP_DEB"
 
 # Check installation status
-if command_exists olivetin; then
+if command_exists OliveTin; then
     echo "OliveTin installed successfully."
 else
     echo "Failed to install OliveTin."
     exit 1
 fi
+
+# Setting up configuration
+# Define source and destination directories
+SRC_DIR="../config/olivetin"
+DEST_DIR="/etc/OliveTin"
+BACKUP_DIR="${DEST_DIR}.old"
+
+# Create backup directory if it doesn't exist
+sudo mkdir -p "${BACKUP_DIR}"
+
+# Copy files to backup directory with .old extension
+sudo cp -r "${DEST_DIR}" "${BACKUP_DIR}"
+
+# Copy new config files to destination directory
+sudo cp -r "${SRC_DIR}" "${DEST_DIR}"
+
+# Ensure correct permissions for copied files
+sudo chown -R root:root "${DEST_DIR}"
+sudo chmod -R 644 "${DEST_DIR}"
+
+# Optional: Print status messages
+echo "OliveTin configuration files copied to ${DEST_DIR}"
+echo "Backup of original files available in ${BACKUP_DIR}"
