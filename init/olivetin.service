@@ -3,7 +3,7 @@ Description=OliveTin
 
 [Service]
 ExecStart=/usr/local/bin/OliveTin --configdir /etc/OliveTin/
-User=go1user
+#User=go1user
 Restart=always
 
 [Install]
