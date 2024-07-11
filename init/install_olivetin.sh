@@ -76,5 +76,8 @@ sudo systemctl enable olivetin.service
 # Start the service
 sudo systemctl start olivetin.service
 
+# Restart the service
+sudo systemctl restart olivetin.service
+
 # Check the status to ensure it's running
 sudo systemctl status olivetin.service
