@@ -31,6 +31,9 @@ actions:
   - title: "Stop Rosbag"
     shell: "cd /home/go1user/git/go1-ros-melodic && docker compose stop rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+  - title: "Stop All Containers"
+    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose down -v --remove-orphans"
+    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   # - title: "Restart Teleop"
   #   icon: '<img src = "customIcons/gamepad.png" width = "48px"/>'
   #   shell: docker restart cps_loki-teleop-1
