@@ -12,7 +12,7 @@ if command_exists olivetin; then
 fi
 
 # Download the OliveTin .deb file from GitHub Releases
-TEMP_DEB="$(mktemp)"
+TEMP_DEB="$(mktemp).deb"
 wget -O "$TEMP_DEB" https://github.com/OliveTin/OliveTin/releases/download/2024.07.07/OliveTin_linux_amd64.deb
 
 # Install the downloaded .deb file
