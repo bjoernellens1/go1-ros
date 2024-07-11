@@ -23,3 +23,7 @@ fi
 # Add the user to the sudo group
 sudo usermod -aG sudo "$USERNAME"
 echo "User $USERNAME added to the sudo group."
+
+# Add the user to the docker group
+sudo usermod -aG docker "$USERNAME"
+echo "User $USERNAME added to the docker group."
