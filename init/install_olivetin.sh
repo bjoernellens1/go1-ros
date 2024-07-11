@@ -16,7 +16,8 @@ TEMP_DEB="$(mktemp)"
 wget -O "$TEMP_DEB" https://github.com/OliveTin/OliveTin/releases/download/2024.07.07/OliveTin_linux_amd64.deb
 
 # Install the downloaded .deb file
-sudo dpkg -i "$TEMP_DEB"
+#sudo dpkg -i "$TEMP_DEB"
+sudo apt install "$TEMP_DEB"
 
 # Install missing dependencies, if any
 sudo apt-get install -f -y
