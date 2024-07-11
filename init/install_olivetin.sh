@@ -46,7 +46,8 @@ sudo mkdir -p "${BACKUP_DIR}"
 sudo cp -r "${DEST_DIR}" "${BACKUP_DIR}"
 
 # Copy new config files to destination directory
-sudo cp -r "${SRC_DIR}/*" "${DEST_DIR}"
+sudo rm -rf "${DEST_DIR}"
+sudo cp -r "${SRC_DIR}" "${DEST_DIR}"
 
 # Ensure correct permissions for copied files
 sudo chown -R root:root "${DEST_DIR}"
