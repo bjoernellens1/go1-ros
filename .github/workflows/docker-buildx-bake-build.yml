@@ -88,6 +88,9 @@ jobs:
           # dockerfile: docker/Dockerfile
           # build-args: |
           #   ROS_DISTRO=melodic
+          enableBuildKit: Yes
+          multiPlatform: Yes
+          
             
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.5.0
