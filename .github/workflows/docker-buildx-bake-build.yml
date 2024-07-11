@@ -81,7 +81,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          dockerfile: docker/Dockerfile
+          dockerfile: ${{GITHUB_WORKSPACE }}/docker/Dockerfile
           # build-args: |
           #   ROS_DISTRO=melodic
             
