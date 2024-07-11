@@ -86,8 +86,10 @@ jobs:
           #cache-from: type=gha
           #cache-to: type=gha,mode=max
           # dockerfile: docker/Dockerfile
-          # build-args: |
-          #   ROS_DISTRO=melodic
+          build-args: |
+             ROS_DISTRO=melodic
+             UNDERLAY_WS="/go1_ws"
+             OVERLAY_WS="/overlay_ws"
           enableBuildKit: Yes
           multiPlatform: Yes
           
