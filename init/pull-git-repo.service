@@ -1,0 +1,12 @@
+[Unit]
+Description=Pull Git Repository at Startup
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/pull_git_repo.sh
+User=go1user
+Group=go1user
+
+[Install]
+WantedBy=multi-user.target
