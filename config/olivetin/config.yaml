@@ -43,16 +43,76 @@ actions:
         choices:
           - value: reboot
           - value: shutdown
-  # This will SSH into a server an run the command "echo complete"
-  - title: SSH test
-    shell: ssh -i /config/ssh/id_rsa -o StrictHostKeyChecking=no go1user@192.168.20.79 "echo complete"
+  - title: Check Internet connection
+    shell: ping -c 3 1.1.1.1
     icon: ping
-    timeout: 5
+    popupOnStart: execution-dialog-stdout-only
 
-  - title: SSH docker start ouster
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.20.79 "cd /home/go1user/git/go1-ros-melodic && docker compose up ouster"
+  # This uses `popupOnStart: execution-dialog-stdout-only` to simply show just
+  # the command output.
+  - title: Check disk space
+    icon: disk
+    shell: df -h /media
+    popupOnStart: execution-dialog-stdout-only
+
+  # This uses `popupOnStart: execution-dialog` to show a dialog with more
+  # information about the command that was run.
+  - title: check dmesg logs
+    shell: dmesg | tail
+    icon: logs
+    popupOnStart: execution-dialog
+
+  # This uses `popupOnStart: execution-button` to display a mini button that
+  # links to the logs.
+  - title: date
+    shell: date
+    timeout: 6
+    icon: clock
+    popupOnStart: execution-button
+
+  # You are not limited to operating system commands, and of course you can run
+  # your own scripts. Here `maxConcurrent` stops the script running multiple
+  # times in parallel. There is also a timeout that will kill the command if it
+  # runs for too long.
+  - title: Run backup script
+    shell: /opt/backupScript.sh
+    shellAfterCompleted: "apprise -t 'Notification: Backup script completed' -b 'The backup script completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
+    maxConcurrent: 1
+    timeout: 10
+    icon: backup
+    popupOnStart: execution-dialog
+
+  # When you want to prompt users for input, that is when you should use
+  # `arguments` - this presents a popup dialog and asks for argument values.
+  #
+  # Docs: https://docs.olivetin.app/action-ping.html
+  - title: Ping host
+    shell: ping {{ host }} -c {{ count }}
     icon: ping
-    timeout: 5
+    timeout: 100
+    popupOnStart: execution-dialog-stdout-only
+    arguments:
+      - name: host
+        title: Host
+        type: ascii_identifier
+        default: example.com
+        description: The host that you want to ping
+
+      - name: count
+        title: Count
+        type: int
+        default: 3
+        description: How many times to do you want to ping?
+  # This will SSH into a server an run the command "echo complete"
+  # - title: SSH test
+  #   shell: ssh -i /config/ssh/id_rsa -o StrictHostKeyChecking=no go1user@192.168.20.79 "echo complete"
+  #   icon: ping
+  #   timeout: 5
+
+  # - title: SSH docker start ouster
+  #   shell: ssh -i /config/ssh/id_rsa go1user@192.168.20.79 "cd /home/go1user/git/go1-ros-melodic && docker compose up ouster"
+  #   icon: ping
+  #   timeout: 5
   
 #   - title: Ping All Servers
 #     shell: echo "ping all..."
