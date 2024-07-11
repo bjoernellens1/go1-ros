@@ -2,6 +2,7 @@
 # That is why we must use some conditional statements to copy over the correct files during build process.
 # Variable TARGETPLATFORM should be auomatically created during build process by docker.
 ARG ROS_DISTRO
+ARG UNDERLAY_WS
 
 ###############################
 # Build OpenCV4 on Ubuntu Bionic
