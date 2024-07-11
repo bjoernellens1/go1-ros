@@ -53,6 +53,9 @@ sudo cp -r "${SRC_DIR}" "${DEST_DIR}"
 sudo chown -R root:root "${DEST_DIR}"
 sudo chmod -R 644 "${DEST_DIR}"
 
+# copy icons
+cp -r "${SRC_DIR}/icons" "/var/www/olivetin/customIcons"
+
 # Optional: Print status messages
 echo "OliveTin configuration files copied to ${DEST_DIR}"
 echo "Backup of original files available in ${BACKUP_DIR}"
