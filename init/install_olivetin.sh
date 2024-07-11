@@ -55,3 +55,22 @@ sudo chmod -R 644 "${DEST_DIR}"
 # Optional: Print status messages
 echo "OliveTin configuration files copied to ${DEST_DIR}"
 echo "Backup of original files available in ${BACKUP_DIR}"
+
+# Make OliveTin directory user accessible
+sudo chown -R go1user "${DEST_DIR}"
+
+# Install service
+# Copy the service file to the systemd directory
+sudo cp olivetin.service /etc/systemd/system/
+
+# Reload systemd to read the new service file
+sudo systemctl daemon-reload
+
+# Enable the service to start on boot
+sudo systemctl enable olivetin.service
+
+# Start the service
+sudo systemctl start olivetin.service
+
+# Check the status to ensure it's running
+sudo systemctl status olivetin.service
