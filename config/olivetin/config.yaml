@@ -5,38 +5,38 @@ showFooter: false
 
 
 
-entities:
-  # - file: /etc/OliveTin/containers.json
-  #   name: container
+# entities:
+#   # - file: /etc/OliveTin/containers.json
+#   #   name: container
 
-  - file: /etc/OliveTin/servers.yaml
-    name: server
+#   - file: /etc/OliveTin/servers.yaml
+#     name: server
 
 actions:
   - title: "Start Ouster Lidar"
     shell: "cd ~/git/go1-ros-melodic && docker compose up -d ouster"
-    icon: '<img src = "customIcons/nav2_start.png" width = "48px"/>'
+    icon: '<img src = "/etc/OliveTin/icons/nav2_start.png" width = "48px"/>'
   - title: "Stop Ouster Lidar"
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop ouster"
-    icon: '<img src = "customIcons/nav2_stop.png" width = "48px"/>'
+    shell: "cd ~/git/go1-ros-melodic && docker compose stop ouster"
+    icon: '<img src = "/etc/OliveTin/icons/nav2_stop.png" width = "48px"/>'
   - title: "Start Realsense"
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d realsense"
-    icon: '<img src = "customIcons/mapping_start.gif" width = "48px"/>'
+    shell: "cd ~/git/go1-ros-melodic && docker compose up -d realsense"
+    icon: '<img src = "/etc/OliveTin/icons/mapping_start.gif" width = "48px"/>'
   - title: "Stop Realsense"
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop realsense"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    shell: "cd ~/git/go1-ros-melodic && docker compose stop realsense"
+    icon: '<img src = "/etc/OliveTin/icons/mapping_stop.gif" width = "48px"/>'
   - title: "Start Rosbag"
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose up -d rosbag"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    shell: "cd ~/git/go1-ros-melodic && docker compose up -d rosbag"
+    icon: '<img src = "/etc/OliveTin/icons/mapping_stop.gif" width = "48px"/>'
   - title: "Stop Rosbag"
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && docker compose stop rosbag"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    shell: "cd ~/git/go1-ros-melodic && docker compose stop rosbag"
+    icon: '<img src = "/etc/OliveTin/icons/mapping_stop.gif" width = "48px"/>'
   # - title: "Restart Teleop"
-  #   icon: '<img src = "customIcons/gamepad.png" width = "48px"/>'
+  #   icon: '<img src = "/etc/OliveTin/icons/gamepad.png" width = "48px"/>'
   #   shell: docker restart cps_loki-teleop-1
   - title: Restart or Shutdown System
     icon: restart
-    shell: ssh -i /config/ssh/id_rsa go1user@192.168.0.2 "cd ~/git/go1-ros-melodic && systemctl {{ choice }}" 
+    shell: "cd ~/git/go1-ros-melodic && systemctl {{ choice }}" 
     arguments:
       - name: choice
         title: Pick one
