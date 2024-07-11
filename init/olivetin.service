@@ -4,10 +4,6 @@ Description=OliveTin
 [Service]
 ExecStart=/usr/local/bin/OliveTin
 Restart=always
-User=go1user   # Adjust this line to specify the user under which OliveTin should run
-Group=go1user  # Adjust this line to specify the group under which OliveTin should run
-WorkingDirectory=/usr/local/bin   # Adjust this line to specify the working directory of OliveTin
-Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 [Install]
 WantedBy=multi-user.target
