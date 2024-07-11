@@ -2,7 +2,7 @@
 Description=OliveTin
 
 [Service]
-ExecStart=/usr/local/bin/OliveTin
+ExecStart=/usr/local/bin/OliveTin --configdir /etc/OliveTin/
 Restart=always
 
 [Install]
