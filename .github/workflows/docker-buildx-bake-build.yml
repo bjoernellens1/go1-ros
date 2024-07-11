@@ -95,8 +95,9 @@ jobs:
 
       - name: Docker Buildx Bake
         uses: docker/bake-action@v5.3.0
-            
-          
+        with:
+          source: "${{ github.server_url }}/${{ github.repository }}.git#${{ github.ref }}"
+          push: true
             
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.5.0
