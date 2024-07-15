@@ -71,7 +71,7 @@ ARG UNDERLAY_WS
 ########################################
 ARG ROS_DISTRO
 
-FROM ros:${ROS_DISTRO} as base
+FROM ros:${ROS_DISTRO} AS base
 
 ARG ROS_DISTRO
 ARG UNDERLAY_WS
@@ -189,8 +189,8 @@ RUN apt update && apt install -y \
 #RUN vcs import < dependencies.repos
 RUN vcs import < dependencies.repos
 
-RUN chmod +x go1_republisher/scripts/mono.py \
-    && chmod +x go1_republisher/scripts/stereo.py
+# RUN chmod +x go1_republisher/scripts/mono.py \
+#     && chmod +x go1_republisher/scripts/stereo.py
 
 # Build the base Colcon workspace, installing dependencies first.
 WORKDIR ${UNDERLAY_WS}
