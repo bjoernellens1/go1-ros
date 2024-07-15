@@ -199,7 +199,8 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
     ros-${ROS_DISTRO}-camera-info-manager \
     python3-pip \
     # python-pip \
-    python-rospkg
+    # python-rospkg
+    # python3-rospkg
 
 RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 
