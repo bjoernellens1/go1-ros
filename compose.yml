@@ -1,12 +1,12 @@
 services:
   base:
     &base # yaml anchor for reuse
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:base
+    image: ghcr.io/bjoernellens1/go1-ros:base-noetic
     build:
       context: .
       dockerfile: docker/Dockerfile
       args:
-        ROS_DISTRO: "melodic"
+        ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
       target: base
       x-bake:
@@ -39,7 +39,7 @@ services:
   overlay:
     &overlay
     <<: *base # using the base service as a template
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:overlay
+    image: ghcr.io/bjoernellens1/go1-ros:overlay-noetic
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -48,7 +48,7 @@ services:
         - linux/arm64
         - linux/amd64
       args:
-        ROS_DISTRO: "melodic"
+        ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
         OVERLAY_WS: "/overlay_ws"
     volumes:
@@ -60,7 +60,7 @@ services:
 
   guis:
     <<: *overlay # using the overlay service as a template
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:guis
+    image: ghcr.io/bjoernellens1/go1-ros:guis-noetic
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -69,7 +69,7 @@ services:
         - linux/arm64
         - linux/amd64
       args:
-        ROS_DISTRO: "melodic"
+        ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
     command: /bin/bash
 
@@ -187,7 +187,7 @@ services:
   ouster:
     &ouster
     <<: *base # using the base service as a template
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:ouster
+    image: ghcr.io/bjoernellens1/go1-ros:ouster-noetic
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -196,7 +196,7 @@ services:
         - linux/arm64
         - linux/amd64
       args:
-        ROS_DISTRO: "melodic"
+        ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
         OVERLAY_WS: "/overlay_ws"
     volumes:
@@ -214,7 +214,7 @@ services:
   realsense:
     &realsense
     <<: *base # using the base service as a template
-    image: ghcr.io/bjoernellens1/go1-ros-melodic/go1:realsense
+    image: ghcr.io/bjoernellens1/go1-ros:realsense-noetic
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -223,7 +223,7 @@ services:
         - linux/arm64
         - linux/amd64
       args:
-        ROS_DISTRO: "melodic"
+        ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
         OVERLAY_WS: "/overlay_ws"
     volumes:

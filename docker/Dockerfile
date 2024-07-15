@@ -225,7 +225,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 # Command to run when the container is started
 CMD ["bash"]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 ###########################################
 # Overlay Image for GO1 Control           #
@@ -259,7 +259,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 # Command to run when the container is started
 CMD ["bash"]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 ###########################################
 # GUI Additions for ROS                   #
@@ -307,7 +307,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 # Command to run when the container is started
 CMD ["bash"]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 # This is an auto generated Dockerfile for ros:ros1-bridge
 # generated from docker_images_ros2/ros1_bridge/create_ros_ros1_bridge_image.Dockerfile.em
@@ -326,7 +326,7 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources
 
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 
-ENV ROS1_DISTRO melodic
+ENV ROS1_DISTRO noetic
 ENV ROS2_DISTRO eloquent
 
 # install ros packages
@@ -359,7 +359,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 # Command to run when the container is started
 CMD ["bash"]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 ###########################################
 # OUSTER Driver                           #
@@ -408,7 +408,7 @@ RUN chmod +x /entrypoint.sh
 
 # Set up the entrypoint
 ENTRYPOINT [ "/entrypoint.sh" ]
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 ################################################################################################################################
 # Intel Realsense rDriver                                                                                                      #
@@ -430,4 +430,4 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 # Command to run when the container is started
 CMD ["bash"]
 
-LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros-melodic
+LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
