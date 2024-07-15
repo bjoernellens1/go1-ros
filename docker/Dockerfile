@@ -198,11 +198,13 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-camera-info-manager \
     python3-pip \
+    python3-rosdep
     # python-pip \
     # python-rospkg
     # python3-rospkg
 
 RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+# rosdep problem?
 
 ENV MAKEFLAGS="-j$(nproc)"
 
@@ -347,7 +349,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # install downstream packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-rosdep \
+    python3-rosdep \
     && rm -rf /var/lib/apt/lists/*
 
 # setup entrypoint
