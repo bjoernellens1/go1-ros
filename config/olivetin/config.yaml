@@ -14,32 +14,32 @@ showFooter: false
 
 actions:
   - title: "Start Ouster Lidar"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose up -d ouster"
+    shell: "cd /home/go1user/git/go1-ros && docker compose up -d ouster"
     icon: '<img src = "customIcons/nav2_start.png" width = "48px"/>'
   - title: "Stop Ouster Lidar"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose stop ouster"
+    shell: "cd /home/go1user/git/go1-ros && docker compose stop ouster"
     icon: '<img src = "customIcons/nav2_stop.png" width = "48px"/>'
   - title: "Start Realsense"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose up -d realsense"
+    shell: "cd /home/go1user/git/go1-ros && docker compose up -d realsense"
     icon: '<img src = "customIcons/mapping_start.gif" width = "48px"/>'
   - title: "Stop Realsense"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose stop realsense"
+    shell: "cd /home/go1user/git/go1-ros && docker compose stop realsense"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Start Rosbag"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose up -d rosbag"
+    shell: "cd /home/go1user/git/go1-ros && docker compose up -d rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Stop Rosbag"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose stop rosbag"
+    shell: "cd /home/go1user/git/go1-ros && docker compose stop rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Stop All Containers"
-    shell: "cd /home/go1user/git/go1-ros-melodic && docker compose down -v --remove-orphans"
+    shell: "cd /home/go1user/git/go1-ros && docker compose down -v --remove-orphans"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   # - title: "Restart Teleop"
   #   icon: '<img src = "customIcons/gamepad.png" width = "48px"/>'
   #   shell: docker restart cps_loki-teleop-1
   - title: Restart or Shutdown System
     icon: restart
-    shell: "cd /home/go1user/git/go1-ros-melodic && systemctl {{ choice }}" 
+    shell: "cd /home/go1user/git/go1-ros && systemctl {{ choice }}" 
     arguments:
       - name: choice
         title: Pick one
@@ -113,7 +113,7 @@ actions:
   #   timeout: 5
 
   # - title: SSH docker start ouster
-  #   shell: ssh -i /config/ssh/id_rsa go1user@192.168.20.79 "cd /home/go1user/git/go1-ros-melodic && docker compose up ouster"
+  #   shell: ssh -i /config/ssh/id_rsa go1user@192.168.20.79 "cd /home/go1user/git/go1-ros && docker compose up ouster"
   #   icon: ping
   #   timeout: 5
   
