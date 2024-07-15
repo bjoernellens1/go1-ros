@@ -233,7 +233,7 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
   && source ${UNDERLAY_WS}/install/setup.bash \
   # && catkin_make
-  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release install 
+  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release 
 
 # Set up the entrypoint
 COPY ./docker/entrypoint.sh /
