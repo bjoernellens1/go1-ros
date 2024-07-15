@@ -1,18 +1,22 @@
 repositories:
-    unitree_legged_sdk:
+    # unitree_legged_sdk:
+    #     type: git
+    #     url: https://github.com/unitreerobotics/unitree_legged_sdk.git
+    #     version: go1
+    # UnitreecameraSDK:
+    #     type: git
+    #     url: https://github.com/unitreerobotics/UnitreecameraSDK.git
+    #     version: main
+    # go1_republisher:
+    #    type: git
+    #    #url: https://github.com/bjoernellens1/go1_republisher
+    #    url: https://github.com/aatb-ch/go1_republisher.git
+    #    version: main
+    # ros-perception:
+    #     type: git
+    #     url: https://github.com/ros-perception/camera_info_manager_py.git
+    #     version: master
+    ros_unitree_noetic: # ros packages for go1 patched for noetic
         type: git
-        url: https://github.com/unitreerobotics/unitree_legged_sdk.git
-        version: go1
-    UnitreecameraSDK:
-        type: git
-        url: https://github.com/unitreerobotics/UnitreecameraSDK.git
-        version: main
-    go1_republisher:
-       type: git
-       #url: https://github.com/bjoernellens1/go1_republisher
-       url: https://github.com/aatb-ch/go1_republisher.git
-       version: main
-    ros-perception:
-        type: git
-        url: https://github.com/ros-perception/camera_info_manager_py.git
+        url: https://github.com/macc-n/ros_unitree
         version: master

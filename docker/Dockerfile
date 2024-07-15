@@ -201,7 +201,21 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
     python3-rosdep \
     # python-pip \
     # python-rospkg
-    python3-rospkg
+    python3-rospkg \
+    liblcm-dev \
+    ros-${ROS_DISTRO}-controller-interface \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+    ros-${ROS_DISTRO}-gazebo-ros-control \
+    ros-${ROS_DISTRO}-joint-state-controller \
+    ros-${ROS_DISTRO}-effort-controllers \
+    ros-${ROS_DISTRO}-joint-trajectory-controller \
+    ros-${ROS_DISTRO}-amcl \
+    ros-${ROS_DISTRO}-move-base \
+    ros-${ROS_DISTRO}-slam-gmapping \
+    ros-${ROS_DISTRO}-hector-slam \
+    ros-${ROS_DISTRO}-map-server \
+    ros-${ROS_DISTRO}-global-planner \
+    ros-${ROS_DISTRO}-dwa-local-planner
 
 RUN rosdep update && rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -r -y
 # rosdep problem?
