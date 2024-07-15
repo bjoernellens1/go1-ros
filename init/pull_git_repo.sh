@@ -8,5 +8,5 @@ if [ ! -d "$REPO_DIR" ]; then
   git clone https://github.com/bjoernellens1/go1-ros "$REPO_DIR"
 else
   cd "$REPO_DIR"
-  git pull origin main
+  git pull origin noetic
 fi
