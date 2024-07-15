@@ -230,7 +230,7 @@ RUN pip3 install --upgrade pip \
 
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   # && catkin_make -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
-  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" install \
+  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" \
   && source ${UNDERLAY_WS}/install/setup.bash \
   # && catkin_make
   && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release 
