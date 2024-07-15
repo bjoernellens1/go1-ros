@@ -203,7 +203,7 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
     # python-rospkg
     # python3-rospkg
 
-RUN rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+RUN rosdep update && rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 # rosdep problem?
 
 ENV MAKEFLAGS="-j$(nproc)"
