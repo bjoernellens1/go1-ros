@@ -1,4 +1,4 @@
-# GO1-ROS-MELODIC
+# GO1-ROS
 ## CPS Docker workspace for Unitree GO1 ROS development
 
 ### Introduction
@@ -49,9 +49,9 @@ docker compose up rviz2
 
 ### Detailed description
 
-# ROS Melodic Docker Compose Project
+# ROS  Docker Compose Project
 
-This project sets up a ROS Melodic environment with GUI support, utilizing Docker Compose. The setup includes services for base dependencies, project-specific overlay, GUI applications, and ROS1 bridge with roscore.
+This project sets up a ROS  environment with GUI support, utilizing Docker Compose. The setup includes services for base dependencies, project-specific overlay, GUI applications, and ROS1 bridge with roscore.
 
 ## Prerequisites
 
@@ -64,9 +64,9 @@ This project sets up a ROS Melodic environment with GUI support, utilizing Docke
 
 ### Base Service (`base`)
 
-The `base` service is the foundational image that contains all necessary dependencies for running ROS Melodic. It includes the following features:
+The `base` service is the foundational image that contains all necessary dependencies for running ROS . It includes the following features:
 
-- ROS Melodic installation
+- ROS  installation
 - Networking and IPC settings for ROS communication
 - X11 configuration for displaying graphical applications
 - NVIDIA GPU support configuration
