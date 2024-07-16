@@ -8,6 +8,7 @@ We are using Docker because it makes it easier to run different ROS environments
 
 ### Install Docker
 To install Docker on your system, follow the instructions on the official Docker website: https://docs.docker.com/get-docker/
+Or use the following commands for Ubuntu:
 
 ```bash
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -21,7 +22,7 @@ newgrp docker
 
 
 ### Build process
-For the build with docker buildx bake you will need binfmt dependencies for arm64 architecture, as we are doing a multiplatform build (Works on normal PCs as well as Jetson Nano, Raspberry Pi, Apple Silicon Devices).
+~~For the build with docker buildx bake you will need binfmt dependencies for arm64 architecture, as we are doing a multiplatform build (Works on normal PCs as well as Jetson Nano, Raspberry Pi, Apple Silicon Devices).~~
 
 For Robot:
 ```
