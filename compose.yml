@@ -89,21 +89,22 @@ services:
   ###################################################################################################################################
   # Webgui control                                                                                                                  #
   ###################################################################################################################################
-  olivetin:
-    container_name: olivetin
-    image: jamesread/olivetin
-    user: root
-    privileged: true
-    volumes:
-      - ./config/olivetin/:/config/ # here is config.yaml and icons located
-      - ./config/olivetin/icons:/var/www/olivetin/customIcons
-      - .:/repo
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - caddy_network
-    ports:
-      - "1337:1337"
-    restart: always
+  # olivetin:
+  #   container_name: olivetin
+  #   image: jamesread/olivetin
+  #   user: root
+  #   privileged: true
+  #   volumes:
+  #     - ./config/olivetin/:/config/ # here is config.yaml and icons located
+  #     - ./config/olivetin/icons:/var/www/olivetin/customIcons
+  #     - .:/repo
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - caddy_network
+  #   ports:
+  #     - "1337:1337"
+  #   restart: always
+  # not needed because installed locally
 
   ################################################################################################################################
   # This section is mostly for supervision from PC                                                                               #

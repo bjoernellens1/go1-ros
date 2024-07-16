@@ -1,4 +1,4 @@
-# GO1-ROS
+# GO1-ROS - Noetic Branch
 
 ## CPS Docker Workspace for Unitree GO1 ROS Development
 
@@ -6,13 +6,29 @@
 
 This repository contains all the necessary code to start developing ROS packages for the Unitree GO1 quadruped robot using Docker. Docker simplifies running different ROS environments on modern operating systems and provides a safe environment to run code on GO1 hardware (Jetson Nano, Raspberry Pi) without heavily modifying the base system, which uses an arm64 architecture.
 
+### Table of Contents
+- [Setup](#setup)
+    - [Prerequisites](#prerequisites)
+    - [Install Docker](#install-docker)
+    - [Network Configuration](#network-configuration)
+    - [Pulling Docker Images](#pulling-docker-images)
+    - [Building Docker Images Locally](#building-docker-images-locally)
+- [Information](#information)
+    - [Understanding Docker Image Builds](#understanding-docker-image-builds)
+    - [GitHub Workflows and GHCR](#github-workflows-and-ghcr)
+- [Using the Robot](#using-the-robot)
+  - [OliveTin Web User Interface](#olivetin-web-user-interface)
+- [Services Overview](#services-overview)
+- [Docker Compose Configuration](#docker-compose-configuration)
+
+### Setup
 ### Prerequisites
 
 Ensure you have the following installed:
 - Docker
 - Docker Compose
 - An Intel or NVIDIA GPU (optional, for GPU support)
-- An X11 server running on your host machine
+- ~~An X11 server running on your host machine~~
 
 ### Install Docker
 
@@ -89,6 +105,7 @@ Or start RViz2:
 docker compose up rviz2
 ```
 
+### Information
 ### Understanding Docker Image Builds
 
 Docker images are built using `Dockerfile`s which define the environment and the steps required to set up the software inside the container. The `docker buildx bake` command allows for concurrent builds, making the process more efficient. For more information on Docker builds, visit the [Docker Build Documentation](https://docs.docker.com/engine/reference/commandline/build/).
@@ -98,6 +115,17 @@ Docker images are built using `Dockerfile`s which define the environment and the
 GitHub workflows automate the process of building and deploying Docker images. In this repository, a GitHub workflow is set up to build the Docker images and push them to the GitHub Container Registry (GHCR). GHCR is a service provided by GitHub for hosting container images. For more information on GitHub workflows and GHCR, visit:
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [GitHub Container Registry Documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+
+### Using the Robot
+
+#### OliveTin Web User Interface
+
+The OliveTin web user interface allows for easy management of the Docker Compose services and the system itself. It is hosted on `go1-pc:1337/`. With OliveTin, you can:
+- Start the Docker Compose services
+- Stop the Docker Compose services
+- Reboot the PC
+
+To access OliveTin, when you are connected to the robot network, open a web browser and navigate to `http://go1-pc.local:1337/`.
 
 ### Services Overview
 
@@ -128,7 +156,3 @@ The `roscore` service runs the `roscore`, the central node in a ROS1 system, han
 ### Docker Compose Configuration
 
 The `Dockerfile` defines the images for each service, setting up base dependencies, project overlays, and GUI dependencies.
-
----
-
-This updated README.md provides a clearer and more structured guide for your colleagues, especially those new to Docker, and includes detailed explanations on network configuration, pulling images, building images locally, and understanding GitHub workflows and GHCR.
