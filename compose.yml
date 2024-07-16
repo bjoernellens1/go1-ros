@@ -133,22 +133,22 @@ services:
 ################################################################################################################################
 # Core Services for Web Management                                                                                             #
 ################################################################################################################################
-  caddy:
-    image: caddy:latest
-    networks:
-      - caddy_network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./config/caddy/content:/usr/share/caddy/
-    restart: always
-    depends_on:
-      - foxglove
-      - olivetin
+  # caddy:
+  #   image: caddy:latest
+  #   networks:
+  #     - caddy_network
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
+  #     - ./config/caddy/content:/usr/share/caddy/
+  #   restart: always
+  #   depends_on:
+  #     - foxglove
+  #     - olivetin
   roscore:
     image: husarion/ros1-bridge:foxy-0.9.6-20230327-stable
     command: |
