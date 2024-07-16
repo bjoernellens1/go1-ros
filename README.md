@@ -1,3 +1,5 @@
+![Unitree GO1 Banner](docs/go1_banner.png)
+
 # GO1-ROS - Noetic Branch
 
 ## CPS Docker Workspace for Unitree GO1 ROS Development
