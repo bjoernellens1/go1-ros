@@ -1,9 +1,19 @@
 #!/bin/bash
 
-# this bash script installs all necessary scripts in this folder
+# Get the script's own name
+self=$(basename "$0")
 
-# Iterate over all executable files in the current directory
+# Iterate over all .sh files in the current directory
 for script in ./*.sh; do
+    # Get the basename of the script
+    scriptname=$(basename "$script")
+    
+    # Skip this script (run_all.sh) itself
+    if [[ "$scriptname" == "$self" ]]; then
+        echo "Skipping $script (self)"
+        continue
+    fi
+
     # Check if the file is executable
     if [[ -x "$script" ]]; then
         echo "Executing $script..."
