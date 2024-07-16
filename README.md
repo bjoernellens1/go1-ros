@@ -61,6 +61,9 @@ This project sets up a ROS  environment with GUI support, utilizing Docker Compo
 - An Intel or NVIDIA GPU (optional, for GPU support)
 - X11 server running on your host machine
 
+## Network Configuration
+![GO1 Networking Diagram](docs/go1_network.drawio.svg)
+
 ## Services Overview
 
 ### Base Service (`base`)
