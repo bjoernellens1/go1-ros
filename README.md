@@ -123,7 +123,7 @@ GitHub workflows automate the process of building and deploying Docker images. I
 The OliveTin web user interface allows for easy management of the Docker Compose services and the system itself. It is hosted on `go1-pc:1337/`. With OliveTin, you can:
 - Start the Docker Compose services
 - Stop the Docker Compose services
-- Reboot the go1-pc
+- Reboot/Shutdown the go1-pc
 
 ![alt text](docs/olivetin.png)
 

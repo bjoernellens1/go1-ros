@@ -25,9 +25,9 @@ actions:
   - title: "Stop Realsense"
     shell: "cd /home/go1user/git/go1-ros && docker compose stop realsense"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
-  - title: "Start Rosbag"
+  - title: "Record Rosbag"
     shell: "cd /home/go1user/git/go1-ros && docker compose up -d rosbag"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    icon: '<img src = "customIcons/rosbag.png" width = "48px"/>'
   - title: "Stop Rosbag"
     shell: "cd /home/go1user/git/go1-ros && docker compose stop rosbag"
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
