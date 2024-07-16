@@ -1,136 +1,134 @@
 # GO1-ROS
-## CPS Docker workspace for Unitree GO1 ROS development
+
+## CPS Docker Workspace for Unitree GO1 ROS Development
 
 ### Introduction
-This repository houses all code needed for starting developing ROS packages for the Unitree GO1 quadruped robot.
 
-We are using Docker because it makes it easier to run different ROS environments even on most recent operating systems. Also, it provides a safe way to run our code on the GO1 implemented hardware (Jetson Nano, Raspberry Pi), without interfering with the base system too much. Btw. they use arm64 architecture.
+This repository contains all the necessary code to start developing ROS packages for the Unitree GO1 quadruped robot using Docker. Docker simplifies running different ROS environments on modern operating systems and provides a safe environment to run code on GO1 hardware (Jetson Nano, Raspberry Pi) without heavily modifying the base system, which uses an arm64 architecture.
+
+### Prerequisites
+
+Ensure you have the following installed:
+- Docker
+- Docker Compose
+- An Intel or NVIDIA GPU (optional, for GPU support)
+- An X11 server running on your host machine
 
 ### Install Docker
-To install Docker on your system, follow the instructions on the official Docker website: https://docs.docker.com/get-docker/
-Or use the following commands for Ubuntu:
 
-```bash
+To install Docker, follow the instructions on the official Docker website: [Docker Installation](https://docs.docker.com/get-docker/).
+
+For Ubuntu, you can use these commands:
+```sh
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 ```
-Then allow your user to access Docker without sudo:
-```bash
+
+Then, allow your user to access Docker without `sudo`:
+```sh
 sudo usermod -aG docker $USER
 newgrp docker
 ```
 
+### Network Configuration
 
-### Build process
-~~For the build with docker buildx bake you will need binfmt dependencies for arm64 architecture, as we are doing a multiplatform build (Works on normal PCs as well as Jetson Nano, Raspberry Pi, Apple Silicon Devices).~~
+Refer to the GO1 networking diagram for details on network setup:
 
-For Robot:
+![GO1 Networking Diagram](docs/go1_network.drawio.svg)
+
+### Pulling Docker Images
+
+The Docker images are built automatically via GitHub workflows and are available on GitHub Container Registry (GHCR). To pull these images, use:
+
+#### For the Robot
+
+```sh
+docker pull ghcr.io/bjoernellens1/go1-ros:overlay
+docker pull ghcr.io/bjoernellens1/go1-ros:controller
 ```
+
+#### For the PC
+
+```sh
+docker pull ghcr.io/bjoernellens1/go1-ros:guis
+docker pull ghcr.io/bjoernellens1/go1-ros:rviz2
+```
+
+### Building Docker Images Locally
+
+If you need to build the Docker images locally, use the following commands:
+
+#### For the Robot
+
+To build the Docker images for the robot, use:
+```sh
 docker buildx bake overlay --load
 docker buildx bake overlay --push
 ```
-e.g.:
-```
+
+Start the controller:
+```sh
 docker compose up -d controller
 ```
-For PC:
-```
+
+#### For the PC
+
+To build the Docker images for the PC, use:
+```sh
 docker buildx bake guis --load
 docker buildx bake guis --push
 ```
---> get into container shell:
-```
+
+Enter the container shell:
+```sh
 docker compose run guis
 ```
-or
-```
+
+Or start RViz2:
+```sh
 docker compose up rviz2
 ```
 
+### Understanding Docker Image Builds
 
-### Detailed description
+Docker images are built using `Dockerfile`s which define the environment and the steps required to set up the software inside the container. The `docker buildx bake` command allows for concurrent builds, making the process more efficient. For more information on Docker builds, visit the [Docker Build Documentation](https://docs.docker.com/engine/reference/commandline/build/).
 
-# ROS  Docker Compose Project
+### GitHub Workflows and GHCR
 
-This project sets up a ROS  environment with GUI support, utilizing Docker Compose. The setup includes services for base dependencies, project-specific overlay, GUI applications, and ROS1 bridge with roscore.
+GitHub workflows automate the process of building and deploying Docker images. In this repository, a GitHub workflow is set up to build the Docker images and push them to the GitHub Container Registry (GHCR). GHCR is a service provided by GitHub for hosting container images. For more information on GitHub workflows and GHCR, visit:
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [GitHub Container Registry Documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 
-## Prerequisites
+### Services Overview
 
-- Docker
-- Docker Compose
-- An Intel or NVIDIA GPU (optional, for GPU support)
-- X11 server running on your host machine
+#### Base Service (`base`)
 
-## Network Configuration
-![GO1 Networking Diagram](docs/go1_network.drawio.svg)
-
-## Services Overview
-
-### Base Service (`base`)
-
-The `base` service is the foundational image that contains all necessary dependencies for running ROS . It includes the following features:
-
-- ROS  installation
+The `base` service includes all necessary dependencies for running ROS, such as:
+- ROS installation
 - Networking and IPC settings for ROS communication
-- X11 configuration for displaying graphical applications
-- NVIDIA GPU support configuration
+- X11 configuration for GUI applications
+- NVIDIA GPU support
 
-### Overlay Service (`overlay`)
+#### Overlay Service (`overlay`)
 
-The `overlay` service extends the base service to include project-specific source code. This allows you to build and run your ROS projects within the Docker environment.
+The `overlay` service builds on the `base` service by adding project-specific source code, allowing you to develop and run your ROS projects within the Docker environment.
 
-### GUI Service (`guis`)
+#### GUI Service (`guis`)
 
-The `guis` service extends the overlay service to include additional dependencies for GUI applications. This is particularly useful for running ROS tools with graphical interfaces.
+The `guis` service extends the `overlay` service to include additional dependencies for GUI applications, useful for running graphical ROS tools.
 
-### ROS1 Bridge Service (`ros1bridge`)
+#### ROS1 Bridge Service (`ros1bridge`)
 
-The `ros1bridge` service sets up a bridge between ROS1 and ROS2, enabling communication between ROS1 and ROS2 nodes.
+The `ros1bridge` service sets up a bridge between ROS1 and ROS2, facilitating communication between ROS1 and ROS2 nodes.
 
-### ROS1 Roscore Service (`roscore`)
+#### ROS1 Roscore Service (`roscore`)
 
-The `roscore` service runs the `roscore`, which is the central node in a ROS1 system. It handles naming and registration of ROS nodes.
+The `roscore` service runs the `roscore`, the central node in a ROS1 system, handling the naming and registration of ROS nodes.
 
-## Docker Compose Configuration
+### Docker Compose Configuration
 
-### Dockerfile
+The `Dockerfile` defines the images for each service, setting up base dependencies, project overlays, and GUI dependencies.
 
-The `Dockerfile` defines the images for each service. It sets up the base dependencies, project overlay, and GUI dependencies.
+---
 
-```Dockerfile
-FROM osrf/ros:melodic-desktop-full
-
-# Set environment variable to suppress interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install necessary packages
-RUN apt-get update && apt-get install -y \
-    xfce4 \
-    xfce4-goodies \
-    tightvncserver \
-    novnc \
-    websockify \
-    supervisor \
-    mesa-utils \
-    x11-xserver-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set up VNC server
-RUN mkdir -p ~/.vnc \
-    && echo "password" | vncpasswd -f > ~/.vnc/passwd \
-    && chmod 600 ~/.vnc/passwd
-
-# Set up startup script for VNC server
-RUN echo '#!/bin/sh\n\
-xrdb $HOME/.Xresources\n\
-startxfce4 &' > ~/.vnc/xstartup \
-    && chmod +x ~/.vnc/xstartup
-
-# Set up supervisord to run both VNC server and noVNC
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Expose the VNC and noVNC ports
-EXPOSE 5901 6080
-
-# Start supervisord
-CMD ["/usr/bin/supervisord"]
+This updated README.md provides a clearer and more structured guide for your colleagues, especially those new to Docker, and includes detailed explanations on network configuration, pulling images, building images locally, and understanding GitHub workflows and GHCR.
