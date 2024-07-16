@@ -54,6 +54,7 @@ sudo chown -R root:root "${DEST_DIR}"
 sudo chmod -R 644 "${DEST_DIR}"
 
 # copy icons
+sudo rm -r "/var/www/olivetin/customIcons"
 sudo cp -r "${SRC_DIR}/icons" "/var/www/olivetin/customIcons"
 
 # Optional: Print status messages
