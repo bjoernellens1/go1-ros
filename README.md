@@ -56,53 +56,40 @@ Refer to the GO1 networking diagram for details on network setup:
 
 The Docker images are built automatically via GitHub workflows and are available on GitHub Container Registry (GHCR). To pull these images, use:
 
-#### For the Robot
-
 ```sh
-docker pull ghcr.io/bjoernellens1/go1-ros:overlay
-docker pull ghcr.io/bjoernellens1/go1-ros:controller
+docker compose pull
 ```
-
-#### For the PC
-
-```sh
-docker pull ghcr.io/bjoernellens1/go1-ros:guis
-docker pull ghcr.io/bjoernellens1/go1-ros:rviz2
-```
-
 ### Building Docker Images Locally
 
 If you need to build the Docker images locally, use the following commands:
 
-#### For the Robot
-
-To build the Docker images for the robot, use:
 ```sh
-docker buildx bake overlay --load
-docker buildx bake overlay --push
+docker buildx bake --load
+```
+### Test Docker Services
+
+Start a service:
+```sh
+docker compose up -d >service_name<
+
 ```
 
-Start the controller:
-```sh
-docker compose up -d controller
-```
-
-#### For the PC
-
-To build the Docker images for the PC, use:
-```sh
-docker buildx bake guis --load
-docker buildx bake guis --push
-```
-
-Enter the container shell:
+Enter the ROS shell:
 ```sh
 docker compose run guis
 ```
 
-Or start RViz2:
+Or start RViz:
 ```sh
-docker compose up rviz2
+docker compose run guis rviz
+```
+
+### Additional First Steps on the go1-pc:
+Some additional setup is needed on the PC to enable all features for remote supervision. The necessary scripts are included in the init/ folder. To run them, use the following commands:
+
+```sh
+cd init
+./run_all.sh
 ```
 
 ### Information
