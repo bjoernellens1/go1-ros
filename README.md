@@ -138,7 +138,6 @@ The OliveTin web user interface allows for easy management of the Docker Compose
 - Reboot/Shutdown the go1-pc
 
 ![OliveTin UI Screenshot](docs/olivetin.png)
-
 To access OliveTin, when you are connected to the robot network, open a web browser and navigate to `http://go1-pc.local:1337/`.
 
 ### Services Overview
