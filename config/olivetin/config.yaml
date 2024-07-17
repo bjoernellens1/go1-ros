@@ -67,11 +67,11 @@ actions:
 
   # This uses `popupOnStart: execution-button` to display a mini button that
   # links to the logs.
-  - title: date
-    shell: date
-    timeout: 6
-    icon: clock
-    popupOnStart: execution-button
+  # - title: date
+  #   shell: date
+  #   timeout: 6
+  #   icon: clock
+  #   popupOnStart: execution-button
 
   # You are not limited to operating system commands, and of course you can run
   # your own scripts. Here `maxConcurrent` stops the script running multiple
@@ -89,7 +89,7 @@ actions:
   # `arguments` - this presents a popup dialog and asks for argument values.
   #
   # Docs: https://docs.olivetin.app/action-ping.html
-  - title: Ping google.at
+  - title: Ping host
     shell: ping {{ host }} -c {{ count }}
     icon: ping
     timeout: 100
