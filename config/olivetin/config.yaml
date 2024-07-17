@@ -61,6 +61,8 @@ actions:
   - title: check Docker logs
     shell: "cd /home/go1user/git/go1-ros && docker compose logs -f"
     icon: logs
+    maxConcurrent: 1
+    timeout: 10
     popupOnStart: execution-dialog
 
   # This uses `popupOnStart: execution-dialog` to show a dialog with more
