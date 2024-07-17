@@ -15,10 +15,10 @@ showFooter: false
 actions:
   - title: "Start Ouster Lidar"
     shell: "cd /home/go1user/git/go1-ros && docker compose up -d ouster"
-    icon: '<img src = "customIcons/nav2_start.png" width = "48px"/>'
+    icon: '<img src = "customIcons/lidar.jpg" width = "48px"/>'
   - title: "Stop Ouster Lidar"
     shell: "cd /home/go1user/git/go1-ros && docker compose stop ouster"
-    icon: '<img src = "customIcons/nav2_stop.png" width = "48px"/>'
+    icon: '<img src = "customIcons/lidar_off.jpg" width = "48px"/>'
   - title: "Start Realsense"
     shell: "cd /home/go1user/git/go1-ros && docker compose up -d realsense"
     icon: '<img src = "customIcons/mapping_start.gif" width = "48px"/>'
