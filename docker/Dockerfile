@@ -4,68 +4,6 @@
 ARG ROS_DISTRO
 ARG UNDERLAY_WS
 
-###############################
-# Build OpenCV4 on Ubuntu Bionic
-###############################
-# FROM ubuntu:bionic AS opencv_builder
-
-# LABEL maintainer="bjoernellens1<bjoern.ellensohn@unileoben.ac.at>"
-
-# ARG ROS_DISTRO
-# ARG UNDERLAY_WS
-
-# # Automatic platform ARGs in the global scope
-# # https://docs.docker.com/reference/dockerfile/#automatic-platform-args-in-the-global-scope
-# ARG TARGETPLATFORM
-# ARG TARGETARCH
-
-# # Install dependencies
-# RUN apt-get update && apt-get install -y \
-#     build-essential \
-#     cmake \
-#     unzip \
-#     pkg-config \
-#     git \
-#     pkg-config \
-#     libjpeg-dev \
-#     libtiff5-dev \
-#     libpng-dev \
-#     libavcodec-dev \
-#     libavformat-dev \
-#     libswscale-dev \
-#     libv4l-dev \
-#     libxvidcore-dev \
-#     libx264-dev \
-#     libgtk-3-dev \
-#     libatlas-base-dev \
-#     gfortran \
-#     python3-dev \
-#     python3-numpy \
-#     python3-venv \
-#     && rm -rf /var/lib/apt/lists/*
-    
-# # Install my project requirements
-# WORKDIR /venv
-# RUN python3 -m venv /venv
-# ENV PATH="/venv/bin:$PATH"
-# RUN pip3 install numpy
-
-# # Clone OpenCV and OpenCV-contrib repositories
-# WORKDIR /opencv_build
-# RUN git clone --branch 4.1.0 https://github.com/opencv/opencv.git \
-#     && git clone --branch 4.1.0 https://github.com/opencv/opencv_contrib.git
-
-# # Build OpenCV
-# WORKDIR /opencv_build/opencv/build
-# RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-#     -D CMAKE_INSTALL_PREFIX=/prefix \
-#     -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-#     -D WITH_LIBV4L=ON \
-#     -D BUILD_EXAMPLES=OFF ..
-# RUN make -j$(nproc)
-# RUN make install
-# RUN ldconfig
-
 ########################################
 # Base Image for GO1 republisher       #
 ########################################
@@ -81,12 +19,6 @@ ARG TARGETARCH
 ENV ROS_DISTRO=${ROS_DISTRO}
 ENV UNDERLAY_WS=${UNDERLAY_WS}
 ENV DEBIAN_FRONTEND noninteractive
-
-# Copy OpenCV binaries from opencv_builder stage
-# COPY --from=opencv_builder /prefix /prefix
-# COPY --from=opencv_builder /venv /venv
-# ENV PATH="/venv/bin:$PATH"
-# RUN ldconfig /prefix
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -112,29 +44,6 @@ RUN apt-get update && apt-get install -y \
     python3-numpy \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
-    
-# Install my project requirements
-# WORKDIR /venv
-# RUN python3 -m venv /venv
-# ENV PATH="/venv/bin:$PATH"
-# RUN pip3 install numpy
-
-# not building opencv manually will be installed via pip later
-# Clone OpenCV and OpenCV-contrib repositories
-# WORKDIR /opencv_build
-# RUN git clone --branch 4.1.0 https://github.com/opencv/opencv.git \
-#     && git clone --branch 4.1.0 https://github.com/opencv/opencv_contrib.git
-
-# # Build OpenCV
-# WORKDIR /opencv_build/opencv/build
-# RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-#     # -D CMAKE_INSTALL_PREFIX=/prefix \
-#     # -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-#     -D WITH_LIBV4L=ON \
-#     -D BUILD_EXAMPLES=OFF ..
-# RUN make -j$(nproc)
-# RUN make install
-# RUN ldconfig
 
 # install make install dependencies (are those needed?)
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -152,12 +61,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libatlas-base-dev \
     gfortran \
     cmake
-
-# Copy built files from opencv_builder stage
-# COPY --from=opencv_builder /opencv_build/ /opencv_build
-# WORKDIR /opencv_build/opencv/build
-# RUN make install
-# RUN ldconfig /prefix
 
 SHELL ["/bin/bash", "-c"]
 
@@ -383,8 +286,6 @@ LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 ###########################################
 # OUSTER Driver                           #
 ###########################################
-#FROM base AS ouster
-# For ouster melodic is not supported any more so we use noetic
 FROM ros:noetic AS ouster
 
 ARG UNDERLAY_WS
@@ -430,7 +331,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 LABEL org.opencontainers.image.source=https://github.com/bjoernellens1/go1-ros
 
 ################################################################################################################################
-# Intel Realsense rDriver                                                                                                      #
+# Intel Realsense Driver                                                                                                       #
 ################################################################################################################################
 FROM base AS realsense
 

@@ -108,6 +108,27 @@ GitHub workflows automate the process of building and deploying Docker images. I
 - [GitHub Container Registry Documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 
 ### Using the Robot
+There are several ways to connect to the go1-pc. Keep in mind that for now, you have to be in the same network to connect.
+
+#### SSH
+
+To connect to the go1-pc via SSH, use the following command:
+
+```sh
+ssh >your_user<@go1-pc.local
+```
+
+#### RDP
+
+On Linux systems install the Remmina RDP client and connect to the go1-pc via RDP. From Windows clients this is possible too.
+
+Connection details:
+
+    Protocol RDP
+    Server go1-pc.local
+    Username >administrator_account<
+    Password >administrator_password<
+
 
 #### OliveTin Web User Interface
 
@@ -116,7 +137,7 @@ The OliveTin web user interface allows for easy management of the Docker Compose
 - Stop the Docker Compose services
 - Reboot/Shutdown the go1-pc
 
-![alt text](docs/olivetin.png)
+![OliveTin UI Screenshot](docs/olivetin.png)
 
 To access OliveTin, when you are connected to the robot network, open a web browser and navigate to `http://go1-pc.local:1337/`.
 
@@ -144,7 +165,7 @@ The `ros1bridge` service sets up a bridge between ROS1 and ROS2, facilitating co
 
 #### ROS1 Roscore Service (`roscore`)
 
-The `roscore` service runs the `roscore`, the central node in a ROS1 system, handling the naming and registration of ROS nodes.
+The `roscore` service runs the `roscore`, the central node in a ROS1 system, handling the naming and registration of ROS nodes. This service should be run first before starting the other services.
 
 ### Docker Compose Configuration
 

@@ -21,11 +21,14 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-      - DISPLAY
+      - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
+      - UNDERLAY_WS="/go1_ws"
+      - OVERLAY_WS="/overlay_ws"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+      - .:/repo
     # deploy:
     #   resources:
     #     reservations:
@@ -51,11 +54,6 @@ services:
         ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
         OVERLAY_WS: "/overlay_ws"
-    volumes:
-      - .:/repo
-    environment:
-      - UNDERLAY_WS="/go1_ws"
-      - OVERLAY_WS="/overlay_ws"
     command: /bin/bash
 
   guis:
