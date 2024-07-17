@@ -200,7 +200,7 @@ services:
         OVERLAY_WS: "/overlay_ws"
     command: >
       bash -c "source devel/setup.bash &&
-      roslaunch ouster_ros driver.launch sensor_hostname:=169.254.4.167 viz:=false"
+      roslaunch ouster_ros driver.launch sensor_hostname:=os-122228000146.local viz:=false
 
 ################################################################################################################################
 # Intel Realsense related extra stuff                                                                                          #

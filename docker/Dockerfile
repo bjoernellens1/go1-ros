@@ -308,6 +308,8 @@ RUN apt-get update && apt-get install -y \
       libspdlog-dev \
       libcurl4-openssl-dev \
       cmake \
+      inetutils-ping \
+      avahi-utils \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
