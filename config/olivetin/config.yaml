@@ -33,7 +33,7 @@ actions:
     icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
   - title: "Stop All Containers"
     shell: "cd /home/go1user/git/go1-ros && docker compose down -v --remove-orphans"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    icon: '<img src = "customIcons/docker_stop.png" width = "48px"/>'
   # - title: "Restart Teleop"
   #   icon: '<img src = "customIcons/gamepad.png" width = "48px"/>'
   #   shell: docker restart cps_loki-teleop-1
@@ -77,19 +77,19 @@ actions:
   # your own scripts. Here `maxConcurrent` stops the script running multiple
   # times in parallel. There is also a timeout that will kill the command if it
   # runs for too long.
-  - title: Run backup script
-    shell: /opt/backupScript.sh
-    shellAfterCompleted: "apprise -t 'Notification: Backup script completed' -b 'The backup script completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
-    maxConcurrent: 1
-    timeout: 10
-    icon: backup
-    popupOnStart: execution-dialog
+  # - title: Run backup script
+  #   shell: /opt/backupScript.sh
+  #   shellAfterCompleted: "apprise -t 'Notification: Backup script completed' -b 'The backup script completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
+  #   maxConcurrent: 1
+  #   timeout: 10
+  #   icon: backup
+  #   popupOnStart: execution-dialog
 
   # When you want to prompt users for input, that is when you should use
   # `arguments` - this presents a popup dialog and asks for argument values.
   #
   # Docs: https://docs.olivetin.app/action-ping.html
-  - title: Ping host
+  - title: Ping google.at
     shell: ping {{ host }} -c {{ count }}
     icon: ping
     timeout: 100
@@ -98,7 +98,7 @@ actions:
       - name: host
         title: Host
         type: ascii_identifier
-        default: example.com
+        default: google.at
         description: The host that you want to ping
 
       - name: count
