@@ -30,7 +30,7 @@ actions:
     icon: '<img src = "customIcons/rosbag.png" width = "48px"/>'
   - title: "Stop Rosbag"
     shell: "cd /home/go1user/git/go1-ros && docker compose stop rosbag"
-    icon: '<img src = "customIcons/mapping_stop.gif" width = "48px"/>'
+    icon: '<img src = "customIcons/rosbag_stop.png" width = "48px"/>'
   - title: "Stop All Containers"
     shell: "cd /home/go1user/git/go1-ros && docker compose down -v --remove-orphans"
     icon: '<img src = "customIcons/docker_stop.png" width = "48px"/>'
