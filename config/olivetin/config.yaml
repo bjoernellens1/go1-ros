@@ -58,6 +58,11 @@ actions:
     shell: df -h /media
     popupOnStart: execution-dialog-stdout-only
 
+  - title: check Docker logs
+    shell: "cd /home/go1user/git/go1-ros && docker compose logs -f"
+    icon: logs
+    popupOnStart: execution-dialog
+
   # This uses `popupOnStart: execution-dialog` to show a dialog with more
   # information about the command that was run.
   - title: check dmesg logs
