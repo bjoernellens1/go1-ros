@@ -340,6 +340,7 @@ FROM base AS realsense
 RUN apt-get update && apt-get install -y \
     ros-$ROS_DISTRO-realsense2-camera \
     ros-$ROS_DISTRO-realsense2-description \
+    ros-$ROS_DISTRO-rgbd-launch \
     && rm -rf /var/lib/apt/lists/*
 
 # setup entrypoint

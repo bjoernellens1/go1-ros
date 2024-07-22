@@ -200,7 +200,7 @@ services:
         OVERLAY_WS: "/overlay_ws"
     command: >
       bash -c "source devel/setup.bash &&
-      roslaunch ouster_ros driver.launch sensor_hostname:=os-122228000146.local viz:=false
+      roslaunch ouster_ros driver.launch sensor_hostname:=os-122228000146.local viz:=false"
 
 ################################################################################################################################
 # Intel Realsense related extra stuff                                                                                          #
@@ -220,32 +220,34 @@ services:
         ROS_DISTRO: "noetic"
         UNDERLAY_WS: "/go1_ws"
         OVERLAY_WS: "/overlay_ws"
-    volumes:
-      - .:/repo
-    devices:
-      - "/dev/HID-SENSOR-2000e1.4.auto:/dev/HID-SENSOR-2000e1.4.auto"
-      # - "/dev/iio:device0:/dev/iio:device0"
-      # - "/dev/iio:device1:/dev/iio:device1"
-      - "/dev/video0:/dev/video0"
-      - "/dev/video1:/dev/video1"
-      - "/dev/video2:/dev/video2"
-      - "/dev/video3:/dev/video3"
-      - "/dev/video4:/dev/video4"
-      - "/dev/video5:/dev/video5"
+    # devices:
+    #   - "/dev/HID-SENSOR-2000e1.4.auto:/dev/HID-SENSOR-2000e1.4.auto"
+    #   # - "/dev/iio:device0:/dev/iio:device0"
+    #   # - "/dev/iio:device1:/dev/iio:device1"
+    #   - "/dev/video0:/dev/video0"
+    #   - "/dev/video1:/dev/video1"
+    #   - "/dev/video2:/dev/video2"
+    #   - "/dev/video3:/dev/video3"
+    #   - "/dev/video4:/dev/video4"
+    #   - "/dev/video5:/dev/video5"
     privileged: true
-    environment:
-      - UNDERLAY_WS="/go1_ws"
-      - OVERLAY_WS="/overlay_ws"
     command: >
       roslaunch realsense2_camera rs_camera.launch
+
+################################################################################################################################
+# GO1 Robot Description                                                                                       #
+################################################################################################################################
+  go1-description:
+    &go1-description
+    <<: *base # using the base service as a template
+    command: >
+      roslaunch go1_description go1_rviz.launch
 
 ################################################################################################################################
 # rosbag recording                                                                                                             #
 ################################################################################################################################
   rosbag:
     <<: *overlay # using the base service as a template
-    volumes:
-      - .:/repo
     command: >
       rosbag record --lz4 -a -p -o /repo/rosbags/auto
     # double check that this is working

@@ -18,5 +18,5 @@ repositories:
     #     version: master
     ros_unitree_noetic: # ros packages for go1 patched for noetic
         type: git
-        url: https://github.com/macc-n/ros_unitree
+        url: https://github.com/bjoernellens1/cps-ros_unitree #https://github.com/macc-n/ros_unitree
         version: master
