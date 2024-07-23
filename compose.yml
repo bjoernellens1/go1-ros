@@ -241,7 +241,7 @@ services:
     &go1-description
     <<: *base # using the base service as a template
     command: >
-      roslaunch go1_description go1_publish.launch
+      bash -c "source devel/setup.bash && roslaunch go1_description go1_publish.launch"
 
 ################################################################################################################################
 # rosbag recording                                                                                                             #

@@ -95,7 +95,7 @@ RUN vcs import < dependencies.repos
 # RUN chmod +x go1_republisher/scripts/mono.py \
 #     && chmod +x go1_republisher/scripts/stereo.py
 
-# Build the base Colcon workspace, installing dependencies first.
+# Build the base catkin workspace, installing dependencies first.
 WORKDIR ${UNDERLAY_WS}
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && apt-get install -y --no-install-recommends \
@@ -136,7 +136,8 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash \
   && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_BLACKLIST_PACKAGES="go1_republisher" \
   # && source ${UNDERLAY_WS}/install/setup.bash \
   # && catkin_make
-  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release 
+  && catkin_make --cmake-args -DCMAKE_BUILD_TYPE=Release \
+  && catkin_make -DCATKIN_WHITELIST_PACKAGES="go1_description"
 
 # Set up the entrypoint
 COPY ./docker/entrypoint.sh /
